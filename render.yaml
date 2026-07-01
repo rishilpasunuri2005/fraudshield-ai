@@ -18,9 +18,10 @@ services:
         fromDatabase:
           name: fraudshield-postgres
           property: connectionString
-      # Automatically binds Redis connection string using fromRedis
+      # Automatically binds Redis connection string from the services array
       - key: REDIS_URL_DOCKER
-        fromRedis:
+        fromService:
+          type: redis
           name: fraudshield-redis
           property: connectionString
       - key: JWT_SECRET
@@ -32,14 +33,14 @@ services:
       - key: OPENAI_MODEL
         value: gpt-4o-2024-08-06
 
-# 2. PostgreSQL Database Resource
+  # 2. Redis Cache Service (Rate Limiter)
+  - type: redis
+    name: fraudshield-redis
+    plan: free
+
+# 3. PostgreSQL Database Resource
 databases:
   - name: fraudshield-postgres
     databaseName: fraudshield
     user: postgres
     plan: free
-
-# 3. Redis Cache Resource (Rate Limiter)
-redis:
-  name: fraudshield-redis
-  plan: free
