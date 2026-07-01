@@ -43,9 +43,14 @@ class Settings(BaseSettings):
     @property
     def get_database_url(self) -> str:
         # If running inside docker container, we'll use docker host
+        url = self.DATABASE_URL
         if os.environ.get("ENV") == "production" or os.path.exists("/.dockerenv"):
-            return self.DATABASE_URL_DOCKER
-        return self.DATABASE_URL
+            url = self.DATABASE_URL_DOCKER
+        
+        # Adapt Render's default postgresql:// to postgresql+asyncpg://
+        if url.startswith("postgresql://"):
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return url
 
     @property
     def get_redis_url(self) -> str:
