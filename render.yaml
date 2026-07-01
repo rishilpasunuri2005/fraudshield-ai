@@ -10,19 +10,17 @@ services:
     dockerfilePath: Dockerfile
     plan: free
     healthCheckPath: /health
-    startCommand: uvicorn api.main:app --host 0.0.0.5 --port $PORT
     envVars:
       - key: ENV
         value: production
-      # Automatically binds PostgreSQL connection string from the database resource below
+      # Automatically binds PostgreSQL connection string
       - key: DATABASE_URL_DOCKER
         fromDatabase:
           name: fraudshield-postgres
           property: connectionString
-      # Automatically binds Redis connection string from the Redis resource below
+      # Automatically binds Redis connection string using fromRedis
       - key: REDIS_URL_DOCKER
-        fromService:
-          type: redis
+        fromRedis:
           name: fraudshield-redis
           property: connectionString
       - key: JWT_SECRET
@@ -33,8 +31,6 @@ services:
         sync: false # You will input your real OpenAI key in the Render dashboard
       - key: OPENAI_MODEL
         value: gpt-4o-2024-08-06
-      - key: PORT
-        value: 10000
 
 # 2. PostgreSQL Database Resource
 databases:
@@ -45,6 +41,5 @@ databases:
 
 # 3. Redis Cache Resource (Rate Limiter)
 redis:
-  - name: fraudshield-redis
-    plan: free
-    ipAllowList: [] # Access restricted only to internal services
+  name: fraudshield-redis
+  plan: free
