@@ -37,10 +37,11 @@ services:
   - type: redis
     name: fraudshield-redis
     plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: Anywhere
 
 # 3. PostgreSQL Database Resource
 databases:
   - name: fraudshield-postgres
-    databaseName: fraudshield
-    user: postgres
     plan: free
