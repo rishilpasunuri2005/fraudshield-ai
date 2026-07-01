@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Upload, ImageIcon, Loader2, AlertTriangle, ShieldCheck, FileText } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 interface AnalysisResult {
   risk_score: number;
@@ -53,7 +54,7 @@ export default function ScreenshotAnalyzer() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/analyze/image", {
+      const response = await fetch(`${API_URL}/analyze/image`, {
         method: "POST",
         body: formData,
       });

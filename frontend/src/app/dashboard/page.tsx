@@ -13,6 +13,7 @@ import {
   Clock, 
   AlertTriangle 
 } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 interface Report {
   id: number;
@@ -30,7 +31,7 @@ export default function CitizenDashboard() {
   useEffect(() => {
     async function fetchReports() {
       try {
-        const response = await fetch("http://localhost:8000/report");
+        const response = await fetch(`${API_URL}/report`);
         if (response.ok) {
           const data = await response.json();
           setReports(data.slice(0, 5)); // show top 5 recent reports

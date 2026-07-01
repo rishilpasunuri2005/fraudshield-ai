@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Search, Globe, AlertTriangle, ShieldCheck, HelpCircle, Loader2 } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 interface AnalysisResult {
   risk_score: number;
@@ -29,7 +30,7 @@ export default function ThreatChecker() {
     setResult(null);
     
     try {
-      const response = await fetch("http://localhost:8000/analyze/text", {
+      const response = await fetch(`${API_URL}/analyze/text`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: inputText })
@@ -57,7 +58,7 @@ export default function ThreatChecker() {
     setResult(null);
     
     try {
-      const response = await fetch("http://localhost:8000/analyze/url", {
+      const response = await fetch(`${API_URL}/analyze/url`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: inputUrl })

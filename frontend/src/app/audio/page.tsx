@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Upload, Mic, Loader2, AlertTriangle, ShieldCheck, Volume2 } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 interface AnalysisResult {
   risk_score: number;
@@ -53,7 +54,7 @@ export default function VoiceScamDetector() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/analyze/audio", {
+      const response = await fetch(`${API_URL}/analyze/audio`, {
         method: "POST",
         body: formData,
       });

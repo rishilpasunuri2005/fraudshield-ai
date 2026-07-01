@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Send, FileText, AlertTriangle, CheckCircle, Loader2 } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 export default function ReportScam() {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ export default function ReportScam() {
     setSuccess(false);
 
     try {
-      const response = await fetch("http://localhost:8000/report", {
+      const response = await fetch(`${API_URL}/report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

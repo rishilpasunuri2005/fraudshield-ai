@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { AlertTriangle, MapPin, Calendar, Smartphone, Phone, Loader2 } from "lucide-react";
+import { API_URL } from "../../lib/api";
 
 interface AnalyticsData {
   heatmap: Array<{ name: string; lat: number; lng: number; value: number }>;
@@ -18,7 +19,7 @@ export default function AnalyticsDashboard() {
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const response = await fetch("http://localhost:8000/analytics");
+        const response = await fetch(`${API_URL}/analytics`);
         if (response.ok) {
           const resData = await response.json();
           setData(resData);
