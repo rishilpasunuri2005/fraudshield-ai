@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "description": "FraudShield AI Next.js 15 Platform",
   "private": true,
   "scripts": {
     "dev": "next dev",
