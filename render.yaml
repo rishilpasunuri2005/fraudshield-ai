@@ -7,7 +7,7 @@ services:
     name: fraudshield-backend
     env: docker
     dockerContext: backend
-    dockerfilePath: Dockerfile
+    dockerfilePath: backend/Dockerfile # Path relative to the repository root
     plan: free
     healthCheckPath: /health
     envVars:
