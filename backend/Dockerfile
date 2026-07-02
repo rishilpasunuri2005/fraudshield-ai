@@ -27,11 +27,11 @@ COPY requirements.txt .
 # Install dependencies using uv
 RUN uv pip install --no-cache --system -r requirements.txt
 
-# Copy source code
-COPY . .
+# Copy source code into a backend folder so absolute imports like 'from backend.api import ...' work
+COPY . /app/backend
 
 # Expose port
 EXPOSE 8000
 
-# Start app
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Start app using the fully qualified module name
+CMD ["uvicorn", "backend.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
