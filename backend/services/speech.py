@@ -58,7 +58,7 @@ async def detect_voice_activity(file_path: str) -> bool:
         return False
 
 async def transcribe_audio_file(file_path: str) -> str:
-    """Transcribes audio file to text using OpenAI Whisper API or local fallback."""
+    """Transcribes audio file to text using local Whisper model."""
     logger.info(f"Transcribing audio file: {file_path}...")
     
     # 1. Check for filename-based mock matching first (for demos and tests)
@@ -68,24 +68,7 @@ async def transcribe_audio_file(file_path: str) -> str:
             logger.info(f"Matched demo transcript key '{key}' from file name.")
             return text
 
-    # 2. Check for OpenAI API configuration
-    is_mock_key = settings.OPENAI_API_KEY.startswith("mock") or settings.OPENAI_API_KEY == ""
-    if not is_mock_key:
-        try:
-            from openai import AsyncOpenAI
-            client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-            
-            with open(file_path, "rb") as audio_file:
-                transcript = await client.audio.transcriptions.create(
-                    model="whisper-1", 
-                    file=audio_file
-                )
-            logger.info("OpenAI Whisper API transcription successful.")
-            return transcript.text
-        except Exception as e:
-            logger.error(f"OpenAI Whisper API transcription failed: {e}. Trying local fallback.")
-
-    # 3. Local Whisper inference fallback (if whisper package is available)
+    # 2. Local Whisper inference (open-source model)
     try:
         import whisper
         logger.info("Loading local Whisper model...")
@@ -94,8 +77,9 @@ async def transcribe_audio_file(file_path: str) -> str:
         logger.info("Local Whisper transcription successful.")
         return result["text"]
     except Exception as e:
-        logger.error(f"Local Whisper package transcription failed: {e}")
+        logger.error(f"Local Whisper transcription failed: {e}")
         
     # Return a default transcript if everything fails
     logger.warning("All transcription methods failed. Returning fallback scam alert text.")
     return DEMO_TRANSCRIPTS["digital_arrest"]
+

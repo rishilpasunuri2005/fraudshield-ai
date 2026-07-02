@@ -33,9 +33,9 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
 
-    # AI Configuration
-    OPENAI_API_KEY: str = "mock-key-replace-with-real-key"
-    OPENAI_MODEL: str = "gpt-4o-2024-08-06"
+    # AI Configuration (Groq - Open Source LLM)
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
     # Logging
     LOG_LEVEL: str = "INFO"

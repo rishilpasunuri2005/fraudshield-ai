@@ -9,9 +9,8 @@ redis==5.0.6
 pyjwt[crypto]==2.8.0
 passlib[bcrypt]==1.7.4
 bcrypt==4.1.3
-openai==1.35.3
 langchain==0.2.5
-langchain-openai==0.1.8
+langchain-groq==0.1.6
 langgraph==0.1.4
 opencv-python-headless==4.10.0.84
 paddleocr==2.7.3
