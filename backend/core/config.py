@@ -33,9 +33,9 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
 
-    # AI Configuration (Groq - Open Source LLM)
-    GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.3-70b-specdec"
+    # AI Configuration (NVIDIA NIM API)
+    NVIDIA_API_KEY: str = ""
+    NVIDIA_MODEL: str = "meta/llama-3.3-70b-instruct"
 
     # Logging
     LOG_LEVEL: str = "INFO"

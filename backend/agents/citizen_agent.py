@@ -1,7 +1,7 @@
 import re
 import logging
 from typing import Optional
-from langchain_groq import ChatGroq
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain_core.prompts import ChatPromptTemplate
 
 from backend.core.config import settings
@@ -80,7 +80,7 @@ async def analyze_text(text: str) -> AgentPrediction:
     logger.info("Agent 1 (Citizen Shield) starting text analysis...")
     
     # Check if we should use fallback heuristics
-    is_mock_key = not settings.GROQ_API_KEY or settings.GROQ_API_KEY.startswith("mock")
+    is_mock_key = not settings.NVIDIA_API_KEY or settings.NVIDIA_API_KEY.startswith("mock")
     if is_mock_key:
         logger.info("Using local heuristic scanner (mock key detected)")
         result = scan_text_heuristics(text)
@@ -97,9 +97,9 @@ async def analyze_text(text: str) -> AgentPrediction:
         )
         
     try:
-        llm = ChatGroq(
-            model=settings.GROQ_MODEL,
-            api_key=settings.GROQ_API_KEY,
+        llm = ChatNVIDIA(
+            model=settings.NVIDIA_MODEL,
+            api_key=settings.NVIDIA_API_KEY,
             temperature=0.0
         )
         structured_llm = llm.with_structured_output(AgentPrediction)
@@ -166,7 +166,7 @@ async def analyze_url(url: str) -> AgentPrediction:
             category="Bank Fraud"
         )
         
-    is_mock_key = not settings.GROQ_API_KEY or settings.GROQ_API_KEY.startswith("mock")
+    is_mock_key = not settings.NVIDIA_API_KEY or settings.NVIDIA_API_KEY.startswith("mock")
     if is_mock_key:
         return AgentPrediction(
             risk_score=15.0,
@@ -178,9 +178,9 @@ async def analyze_url(url: str) -> AgentPrediction:
         )
 
     try:
-        llm = ChatGroq(
-            model=settings.GROQ_MODEL,
-            api_key=settings.GROQ_API_KEY,
+        llm = ChatNVIDIA(
+            model=settings.NVIDIA_MODEL,
+            api_key=settings.NVIDIA_API_KEY,
             temperature=0.0
         )
         structured_llm = llm.with_structured_output(AgentPrediction)
