@@ -31,7 +31,7 @@ services:
       - key: GROQ_API_KEY
         sync: false # You will input your free Groq key in the Render dashboard
       - key: GROQ_MODEL
-        value: qwen-2.5-32b
+        value: llama-3.3-70b-versatile
 
   # 2. Redis Cache Service (Rate Limiter)
   - type: redis
