@@ -8,7 +8,7 @@ FraudShield AI is a modular, production-ready public safety platform designed to
 
 - **Backend**: Python 3.12, [FastAPI](file:///c:/Users/rishi/fraudshield-ai/backend/api/main.py) (Asynchronous API endpoints), [SQLAlchemy 2.0](file:///c:/Users/rishi/fraudshield-ai/backend/database/session.py) (PostgreSQL ORM), [Alembic](file:///c:/Users/rishi/fraudshield-ai/backend/alembic/env.py) (Migrations), Redis (API rate limiting), uv package manager.
 - **Frontend**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS, Lucide icons, Framer Motion (premium glassmorphic styling, animations).
-- **AI / Speech / Vision**: LangChain / LangGraph (Multi-agent orchestration), OpenAI GPT-5.5 / GPT-4o (structured JSON outputs), [Whisper](file:///c:/Users/rishi/fraudshield-ai/backend/services/speech.py) (Audio speech-to-text), [Silero VAD](file:///c:/Users/rishi/fraudshield-ai/backend/services/speech.py) (Voice Activity Detection), [OpenCV & PaddleOCR](file:///c:/Users/rishi/fraudshield-ai/backend/services/ocr.py) (Screenshot text extraction).
+- **AI / Speech / Vision**: LangChain / LangGraph (Multi-agent orchestration), Groq Llama 3.3 70B (structured JSON outputs), [Whisper](file:///c:/Users/rishi/fraudshield-ai/backend/services/speech.py) (Audio speech-to-text), [Silero VAD](file:///c:/Users/rishi/fraudshield-ai/backend/services/speech.py) (Voice Activity Detection), [OpenCV & PaddleOCR](file:///c:/Users/rishi/fraudshield-ai/backend/services/ocr.py) (Screenshot text extraction).
 - **Graph Intelligence**: [Neo4j Community](file:///c:/Users/rishi/fraudshield-ai/backend/services/graph.py) (Bolt driver & APOC plugin for fraud clustering).
 - **Monitoring**: Prometheus (Scraping `/metrics` metrics in FastAPI) and Grafana (Visualizing system dashboards).
 
