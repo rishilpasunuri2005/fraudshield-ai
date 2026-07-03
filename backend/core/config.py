@@ -40,9 +40,13 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
 
+    # SQLite fallback for local development without Docker
+    SQLITE_FALLBACK: bool = True
+    SQLITE_URL: str = "sqlite+aiosqlite:///./fraudshield_dev.db"
+
     @property
     def get_database_url(self) -> str:
-        # If running inside docker container, we'll use docker host
+        # If running inside docker container or production, use the configured PostgreSQL
         url = self.DATABASE_URL
         if os.environ.get("ENV") == "production" or os.path.exists("/.dockerenv"):
             url = self.DATABASE_URL_DOCKER

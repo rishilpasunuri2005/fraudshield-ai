@@ -80,8 +80,8 @@ services:
       - NEO4J_PASSWORD=password123
       - JWT_SECRET=44efee2d37c8ee5e2df44f128c11ba716dfefc2a688bc89efc464c8d10b77dbd
       - JWT_ALGORITHM=HS256
-      - OPENAI_API_KEY=mock-key-replace-with-real-key
-      - OPENAI_MODEL=gpt-4o-2024-08-06
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY:-your-nvidia-api-key-here}
+      - NVIDIA_MODEL=meta/llama-3.3-70b-instruct
       - LOG_LEVEL=INFO
     volumes:
       - ./backend:/app
