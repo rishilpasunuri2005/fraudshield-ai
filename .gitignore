@@ -1,0 +1,25 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.python-version
+
+# Node/Frontend
+node_modules/
+.next/
+
+# IDE / Editor config
+.vscode/
+.idea/
+.gemini/
+*.swp
