@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
+  --background: #080808;
   --foreground: #f4f4f5;
-  --card: #18181b;
+  --card: #0d0d0e;
   --card-foreground: #f4f4f5;
-  --primary: #10b981;
-  --primary-foreground: #09090b;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #f4f4f5;
+  --primary: #00ff66;
+  --primary-foreground: #000000;
+  --muted: #121214;
+  --muted-foreground: #8a8a93;
+  --accent: #00e5ff;
+  --accent-foreground: #000000;
   --destructive: #ef4444;
   --destructive-foreground: #f4f4f5;
-  --border: #27272a;
+  --border: #1f1f23;
 }
 
 @theme inline {
@@ -30,6 +30,48 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+
+  /* Map standard colors for seamless migration of existing UI elements */
+  --color-emerald-50: rgba(0, 255, 102, 0.05);
+  --color-emerald-100: rgba(0, 255, 102, 0.1);
+  --color-emerald-200: rgba(0, 255, 102, 0.2);
+  --color-emerald-300: #33ff85;
+  --color-emerald-400: #00ff66;
+  --color-emerald-500: #00ff66;
+  --color-emerald-600: #00cc52;
+  --color-emerald-700: #00993d;
+  --color-emerald-800: #006629;
+  --color-emerald-900: #003314;
+
+  --color-teal-50: rgba(0, 255, 102, 0.05);
+  --color-teal-100: rgba(0, 255, 102, 0.1);
+  --color-teal-200: rgba(0, 255, 102, 0.2);
+  --color-teal-300: #33ff85;
+  --color-teal-400: #00ff66;
+  --color-teal-500: #00ff66;
+  --color-teal-600: #00cc52;
+
+  --color-indigo-50: rgba(0, 229, 255, 0.05);
+  --color-indigo-100: rgba(0, 229, 255, 0.1);
+  --color-indigo-200: rgba(0, 229, 255, 0.2);
+  --color-indigo-300: #33ebff;
+  --color-indigo-400: #00e5ff;
+  --color-indigo-500: #00e5ff;
+  --color-indigo-600: #00b2cc;
+  --color-indigo-700: #008099;
+
+  --color-pink-400: #00e5ff;
+  --color-pink-500: #00e5ff;
+
+  /* Force sharp tech border radii globally */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-2xl: 4px;
+  --radius-3xl: 4px;
   
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -38,41 +80,44 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
+  /* CyberShade radial neon glows + subtle grid dot overlay */
   background-image: 
-    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.04) 0px, transparent 50%),
-    radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.04) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.04) 0px, transparent 50%);
+    radial-gradient(circle at 10% 20%, rgba(0, 255, 102, 0.03) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
+    radial-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 24px 24px;
   background-attachment: fixed;
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 
 /* Glassmorphism helpers */
 .glass {
-  background: rgba(24, 24, 27, 0.65);
+  background: rgba(13, 13, 14, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(63, 63, 70, 0.4);
+  border: 1px solid var(--border);
 }
 
 .glass-emerald {
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(0, 255, 102, 0.03);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(0, 255, 102, 0.15);
 }
 
 .glass-red {
-  background: rgba(239, 68, 68, 0.05);
+  background: rgba(239, 68, 68, 0.03);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.15);
 }
 
 .glass-card {
-  background: rgba(20, 20, 23, 0.7);
+  background: rgba(13, 13, 14, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(63, 63, 70, 0.25);
+  border: 1px solid var(--border);
+  border-radius: 4px;
 }
 
 /* Custom scrollbars */
@@ -81,12 +126,12 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(24, 24, 27, 0.3);
+  background: rgba(8, 8, 8, 0.5);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(161, 161, 170, 0.3);
-  border-radius: 3px;
+  background: rgba(138, 138, 147, 0.2);
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.5);
+  background: rgba(0, 255, 102, 0.4);
 }

@@ -63,17 +63,17 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden">
       {/* Sidebar for Desktop */}
-      <aside className="hidden md:flex md:flex-col md:w-64 glass border-r border-zinc-800/80 shrink-0">
-        <div className="flex items-center gap-3 px-6 h-16 border-b border-zinc-800/80">
-          <Shield className="h-7 w-7 text-emerald-500 animate-pulse" />
-          <span className="font-bold text-lg tracking-wider bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-            FRAUDSHIELD AI
+      <aside className="hidden md:flex md:flex-col md:w-64 bg-card border-r border-border shrink-0">
+        <div className="flex items-center gap-3 px-6 h-16 border-b border-border">
+          <Shield className="h-5 w-5 text-primary animate-pulse" />
+          <span className="font-bold text-base tracking-widest text-zinc-100 font-mono">
+            FRAUDSHIELD_AI
           </span>
         </div>
         
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          <div className="text-zinc-500 text-xs font-semibold px-3 mb-2 tracking-widest uppercase">
-            {role === "citizen" ? "Citizen Portal" : "Police Operations"}
+        <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+          <div className="text-zinc-500 text-[10px] font-bold px-4 mb-3 tracking-widest uppercase font-mono">
+            {role === "citizen" ? "[ CITIZEN PORTAL ]" : "[ POLICE PORTAL ]"}
           </div>
           
           {navItems
@@ -85,26 +85,26 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-[4px] text-xs font-semibold tracking-wider uppercase transition-all ${
                     active 
-                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 shadow-md shadow-emerald-500/5" 
-                      : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/50"
+                      ? "bg-primary/5 text-primary border border-primary/20 shadow-sm shadow-primary/5" 
+                      : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/40 border border-transparent"
                   }`}
                 >
-                  <Icon className={`h-4 w-4 ${active ? "text-emerald-400" : "text-zinc-400"}`} />
+                  <Icon className={`h-4 w-4 ${active ? "text-primary" : "text-zinc-400"}`} />
                   {item.name}
                 </Link>
               );
             })}
         </nav>
 
-        <div className="p-4 border-t border-zinc-800/80 bg-zinc-950/40">
+        <div className="p-4 border-t border-border bg-card">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-zinc-400 font-medium">Simulation Role:</span>
+            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider font-mono">Role:</span>
             <select
               value={role}
               onChange={(e) => handleRoleChange(e.target.value as "citizen" | "police")}
-              className="text-xs font-semibold bg-zinc-900 border border-zinc-800 rounded px-2.5 py-1 text-emerald-400 focus:outline-none focus:border-emerald-500 cursor-pointer"
+              className="text-[10px] font-bold uppercase font-mono bg-background border border-border rounded-[4px] px-2.5 py-1 text-primary focus:outline-none focus:border-primary cursor-pointer"
             >
               <option value="citizen">Citizen</option>
               <option value="police">Police Officer</option>
@@ -116,19 +116,19 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
       {/* Mobile Drawer */}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 flex md:hidden">
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <aside className="relative flex flex-col w-64 max-w-xs h-full bg-zinc-900 border-r border-zinc-800 p-4 z-50">
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <aside className="relative flex flex-col w-64 max-w-xs h-full bg-card border-r border-border p-4 z-50">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <Shield className="h-6 w-6 text-emerald-500" />
-                <span className="font-bold text-md text-emerald-400">FraudShield AI</span>
+                <Shield className="h-5 w-5 text-primary" />
+                <span className="font-bold text-sm tracking-wider text-zinc-100 font-mono">FRAUDSHIELD_AI</span>
               </div>
               <button onClick={() => setMobileOpen(false)}>
-                <X className="h-6 w-6 text-zinc-400" />
+                <X className="h-5 w-5 text-zinc-400" />
               </button>
             </div>
             
-            <nav className="flex-1 space-y-1 overflow-y-auto">
+            <nav className="flex-1 space-y-1.5 overflow-y-auto">
               {navItems
                 .filter((item) => item.roles.includes(role))
                 .map((item) => {
@@ -139,10 +139,10 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                       key={item.name}
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-[4px] text-xs font-semibold tracking-wider uppercase transition-all ${
                         active 
-                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
-                          : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900"
+                          ? "bg-primary/5 text-primary border border-primary/20" 
+                          : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/40 border border-transparent"
                       }`}
                     >
                       <Icon className="h-4 w-4" />
@@ -152,13 +152,13 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                 })}
             </nav>
 
-            <div className="pt-4 border-t border-zinc-800">
+            <div className="pt-4 border-t border-border">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-zinc-400">Role:</span>
+                <span className="text-[10px] text-zinc-400 font-bold uppercase font-mono">Role:</span>
                 <select
                   value={role}
                   onChange={(e) => handleRoleChange(e.target.value as "citizen" | "police")}
-                  className="text-xs bg-zinc-900 border border-zinc-850 rounded px-2 py-1 text-emerald-400 focus:outline-none"
+                  className="text-[10px] font-bold uppercase font-mono bg-background border border-border rounded-[4px] px-2 py-1 text-primary focus:outline-none"
                 >
                   <option value="citizen">Citizen</option>
                   <option value="police">Police Officer</option>
@@ -172,27 +172,27 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
       {/* Main Workspace Frame */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         {/* Top Header */}
-        <header className="flex items-center justify-between md:justify-end px-6 h-16 glass border-b border-zinc-800/80 shrink-0">
+        <header className="flex items-center justify-between md:justify-end px-6 h-16 bg-card border-b border-border shrink-0">
           <button className="md:hidden p-1 text-zinc-400 hover:text-zinc-100" onClick={() => setMobileOpen(true)}>
             <Menu className="h-6 w-6" />
           </button>
           
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-zinc-900/80 border border-zinc-850 rounded-full px-3.5 py-1.5 text-xs text-zinc-300">
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="flex items-center gap-2 bg-background border border-border rounded-[4px] px-3.5 py-1.5 text-[9px] text-zinc-300 font-mono uppercase tracking-wider">
+              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               <span>Safety Server Connected</span>
             </div>
             
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-semibold text-zinc-100">
+                <p className="text-xs font-semibold text-zinc-100 uppercase tracking-wide">
                   {role === "citizen" ? "Rahul Verma" : "Inspector A. Sharma"}
                 </p>
-                <p className="text-xs text-zinc-400 font-medium">
-                  {role === "citizen" ? "Citizen User" : "Mumbai Cyber Cell (Admin)"}
+                <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider font-mono">
+                  {role === "citizen" ? "Citizen User" : "Mumbai Cyber Cell"}
                 </p>
               </div>
-              <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-emerald-500 to-indigo-500 flex items-center justify-center font-bold text-zinc-950 shadow-md">
+              <div className="h-9 w-9 border border-primary/20 bg-primary/5 text-primary flex items-center justify-center font-mono font-bold text-xs rounded-[4px]">
                 {role === "citizen" ? "RV" : "AS"}
               </div>
             </div>

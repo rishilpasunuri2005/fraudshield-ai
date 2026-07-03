@@ -1,33 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { Shield, Eye, AlertOctagon, HelpCircle, PhoneCall, Layers, Globe } from "lucide-react";
+import { Shield, Eye, AlertOctagon, HelpCircle, PhoneCall, Layers, Globe, Radio } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-16">
       {/* Hero Section */}
-      <div className="text-center relative py-12">
-        <div className="absolute inset-0 -top-8 flex justify-center -z-10">
-          <div className="h-44 w-[600px] rounded-full bg-emerald-500/10 blur-[100px]" />
+      <div className="text-center relative py-12 border border-border bg-card/60 p-8 rounded-[4px] overflow-hidden">
+        {/* Subtle Background Glows */}
+        <div className="absolute -top-12 left-1/4 h-32 w-32 rounded-full bg-primary/10 blur-[80px]" />
+        <div className="absolute -bottom-12 right-1/4 h-32 w-32 rounded-full bg-accent/10 blur-[80px]" />
+        
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-primary/20 bg-primary/5 text-[10px] font-bold text-primary uppercase tracking-widest font-mono rounded-[4px] mb-6">
+          <Radio className="h-3 w-3 animate-pulse" /> [ STATE INTELLIGENCE ACTIVATED ]
         </div>
         
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400 mb-6 uppercase tracking-wider animate-bounce">
-          <Shield className="h-4 w-4" /> ET AI Hackathon 2026 Submission
-        </div>
-        
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-zinc-100 via-zinc-100 to-emerald-400 bg-clip-text text-transparent">
-          Proactive Digital Public Safety
+        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-widest uppercase font-mono text-zinc-100">
+          FRAUDSHIELD_AI
         </h1>
+        <p className="text-xs font-bold text-primary uppercase tracking-widest font-mono mt-2 mb-6">
+          // Proactive Digital Public Safety Infrastructure
+        </p>
         
-        <p className="mt-4 text-lg text-zinc-400 max-w-2xl mx-auto font-medium">
-          FraudShield AI is an intelligent public safety ecosystem detecting and investigations scam networks, WhatsApp extortion, phishing links, and digital arrest threats.
+        <p className="text-xs text-zinc-400 max-w-xl mx-auto leading-relaxed font-mono uppercase">
+          Autonomous multi-agent scanner detecting syndicate phone networks, WhatsApp extortion, audio threat VAD signals, and phishing vectors.
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Link
             href="/dashboard"
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-zinc-950 font-bold text-sm hover:shadow-lg hover:shadow-emerald-500/20 hover:scale-105 transition-all"
+            className="px-6 py-3 rounded-[4px] bg-primary text-zinc-950 font-bold text-xs uppercase tracking-widest hover:bg-emerald-400 transition-all font-mono shadow-sm hover:shadow-primary/20"
           >
             Access Citizen Portal
           </Link>
@@ -36,72 +39,89 @@ export default function LandingPage() {
               localStorage.setItem("user-role", "police");
               window.location.href = "/police";
             }}
-            className="px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 font-semibold text-sm hover:bg-zinc-850 hover:text-white transition-all flex items-center gap-2"
+            className="px-6 py-3 rounded-[4px] bg-background border border-border text-zinc-200 font-bold text-xs uppercase tracking-widest hover:border-primary/40 hover:text-primary transition-all flex items-center gap-2 font-mono"
           >
-            <Eye className="h-4 w-4 text-emerald-400" /> Enter Police Console
+            <Eye className="h-4 w-4" /> Enter Police Console
           </button>
         </div>
       </div>
 
       {/* Feature Section */}
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-emerald-500/30 transition-all">
-          <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4 border border-emerald-500/20">
-            <Shield className="h-5 w-5 text-emerald-400" />
-          </div>
-          <h3 className="text-lg font-bold text-zinc-100 mb-2">Citizen Fraud Shield</h3>
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            Instantly checks suspicious SMS texts, extortive chat messages, and domain links using LangChain diagnostics.
-          </p>
+      <div>
+        <div className="text-left border-l-2 border-primary pl-4 mb-8">
+          <h2 className="text-xs font-extrabold text-zinc-400 uppercase tracking-widest font-mono">System Directory</h2>
+          <p className="text-lg font-bold text-zinc-100 uppercase tracking-wider font-mono">Active Defense Modules</p>
         </div>
-
-        <div className="glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-indigo-500/30 transition-all">
-          <div className="h-10 w-10 rounded-lg bg-indigo-500/10 flex items-center justify-center mb-4 border border-indigo-500/20">
-            <PhoneCall className="h-5 w-5 text-indigo-400" />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="glass-card p-6 rounded-[4px] relative overflow-hidden group hover:border-primary/40 transition-all">
+            <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-zinc-600 font-bold uppercase select-none">
+              [ MOD_01 ]
+            </div>
+            <div className="h-10 w-10 border border-primary/20 bg-primary/5 flex items-center justify-center mb-4 rounded-[4px]">
+              <Shield className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="text-sm font-bold text-zinc-100 uppercase tracking-wider font-mono mb-2">Citizen Shield</h3>
+            <p className="text-[11px] text-zinc-400 leading-relaxed font-mono uppercase">
+              Immediate heuristic and LLM scanning of suspicious SMS texts, extortion logs, and domain links.
+            </p>
           </div>
-          <h3 className="text-lg font-bold text-zinc-100 mb-2">Voice Scam Detector</h3>
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            Filters static via Silero VAD, transcribes threat calls using Whisper, and extracts digital arrest indicators.
-          </p>
-        </div>
 
-        <div className="glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-pink-500/30 transition-all">
-          <div className="h-10 w-10 rounded-lg bg-pink-500/10 flex items-center justify-center mb-4 border border-pink-500/20">
-            <AlertOctagon className="h-5 w-5 text-pink-400" />
+          <div className="glass-card p-6 rounded-[4px] relative overflow-hidden group hover:border-accent/40 transition-all">
+            <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-zinc-600 font-bold uppercase select-none">
+              [ MOD_02 ]
+            </div>
+            <div className="h-10 w-10 border border-accent/20 bg-accent/5 flex items-center justify-center mb-4 rounded-[4px]">
+              <PhoneCall className="h-5 w-5 text-accent" />
+            </div>
+            <h3 className="text-sm font-bold text-zinc-100 uppercase tracking-wider font-mono mb-2">Audio Scanner</h3>
+            <p className="text-[11px] text-zinc-400 leading-relaxed font-mono uppercase">
+              Silero Voice Activity Detection filtering static, transcribed with Whisper to target arrest threats.
+            </p>
           </div>
-          <h3 className="text-lg font-bold text-zinc-100 mb-2">Screenshot Analyzer</h3>
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            Extracts text from chat, banking, and email screenshots using CV pre-processing and PaddleOCR.
-          </p>
-        </div>
 
-        <div className="glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-teal-500/30 transition-all">
-          <div className="h-10 w-10 rounded-lg bg-teal-500/10 flex items-center justify-center mb-4 border border-teal-500/20">
-            <Layers className="h-5 w-5 text-teal-400" />
+          <div className="glass-card p-6 rounded-[4px] relative overflow-hidden group hover:border-accent/40 transition-all">
+            <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-zinc-600 font-bold uppercase select-none">
+              [ MOD_03 ]
+            </div>
+            <div className="h-10 w-10 border border-accent/20 bg-accent/5 flex items-center justify-center mb-4 rounded-[4px]">
+              <AlertOctagon className="h-5 w-5 text-accent" />
+            </div>
+            <h3 className="text-sm font-bold text-zinc-100 uppercase tracking-wider font-mono mb-2">OCR Extract</h3>
+            <p className="text-[11px] text-zinc-400 leading-relaxed font-mono uppercase">
+              Chat, bank transaction logs, and video call screenshot extraction powered by PaddleOCR.
+            </p>
           </div>
-          <h3 className="text-lg font-bold text-zinc-100 mb-2">Network Intelligence</h3>
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            Connects suspects, device identifiers, and UPIs in a Neo4j knowledge graph to trace fraud clusters.
-          </p>
+
+          <div className="glass-card p-6 rounded-[4px] relative overflow-hidden group hover:border-primary/40 transition-all">
+            <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-zinc-600 font-bold uppercase select-none">
+              [ MOD_04 ]
+            </div>
+            <div className="h-10 w-10 border border-primary/20 bg-primary/5 flex items-center justify-center mb-4 rounded-[4px]">
+              <Layers className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="text-sm font-bold text-zinc-100 uppercase tracking-wider font-mono mb-2">Network intel</h3>
+            <p className="text-[11px] text-zinc-400 leading-relaxed font-mono uppercase">
+              Neo4j-powered syndicate mapping connecting suspect identifiers, phone nodes, and UPI vectors.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Statistics / Trust Banner */}
-      <div className="mt-16 glass-card p-8 rounded-3xl border border-zinc-800/80 bg-zinc-950/40 relative overflow-hidden">
-        <div className="absolute right-0 top-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-emerald-500/5 blur-[80px]" />
-        
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          <div>
-            <p className="text-4xl font-extrabold text-emerald-400 tracking-tight">100%</p>
-            <p className="mt-1 text-sm font-semibold text-zinc-400 uppercase tracking-wider">Structured JSON Output</p>
+      {/* Statistics / Metrics Banner */}
+      <div className="border border-border bg-card/40 p-8 rounded-[4px] relative overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center font-mono">
+          <div className="border-r border-border/60 last:border-none sm:pr-4">
+            <p className="text-3xl font-extrabold text-primary tracking-tight">100%</p>
+            <p className="mt-2 text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Structured JSON Output</p>
           </div>
-          <div>
-            <p className="text-4xl font-extrabold text-indigo-400 tracking-tight">&lt; 3s</p>
-            <p className="mt-1 text-sm font-semibold text-zinc-400 uppercase tracking-wider">Analysis Latency</p>
+          <div className="border-r border-border/60 last:border-none sm:px-4">
+            <p className="text-3xl font-extrabold text-accent tracking-tight">&lt; 3.0s</p>
+            <p className="mt-2 text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Real-time analysis latency</p>
           </div>
-          <div>
-            <p className="text-4xl font-extrabold text-teal-400 tracking-tight">Neo4j</p>
-            <p className="mt-1 text-sm font-semibold text-zinc-400 uppercase tracking-wider">Syndicate Clustering</p>
+          <div className="sm:pl-4">
+            <p className="text-3xl font-extrabold text-primary tracking-tight">NEO4J</p>
+            <p className="mt-2 text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Syndicate Hotspot Clustering</p>
           </div>
         </div>
       </div>
