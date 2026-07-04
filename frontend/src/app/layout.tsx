@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import TopNavLayout from "./topnav-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FraudShield AI - Public Safety Intelligence",
-  description: "AI-powered public safety platform to analyze, prevent and investigate scams and digital arrest networks.",
+  title: "FraudShield AI — Protect Yourself from Digital Fraud",
+  description:
+    "AI-powered public safety platform. Analyze screenshots, suspicious messages, scam calls, URLs and documents to detect digital arrest scams, phishing, UPI fraud and more.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b0f1e",
 };
 
 export default function RootLayout({
@@ -24,9 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full bg-black text-white dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-full flex flex-col`}>
-        <TopNavLayout>{children}</TopNavLayout>
+    <html lang="en" className="dark bg-background" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} min-h-svh antialiased`}
+      >
+        {children}
       </body>
     </html>
   );
