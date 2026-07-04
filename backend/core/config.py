@@ -46,12 +46,22 @@ class Settings(BaseSettings):
 
     @property
     def get_database_url(self) -> str:
-        # If running inside docker container or production, use the configured PostgreSQL
-        url = self.DATABASE_URL
-        if os.environ.get("ENV") == "production" or os.path.exists("/.dockerenv"):
-            url = self.DATABASE_URL_DOCKER
+        """Returns the async database URL.
         
-        # Adapt Render's default postgresql:// to postgresql+asyncpg://
+        In production (Render), DATABASE_URL is injected directly as postgresql://...
+        which we convert to postgresql+asyncpg:// for the async driver.
+        In Docker, DATABASE_URL_DOCKER points to the container network.
+        In local dev, defaults to localhost.
+        """
+        if os.environ.get("ENV") == "production":
+            # Render injects DATABASE_URL; also check DATABASE_URL_DOCKER
+            url = self.DATABASE_URL
+        elif os.path.exists("/.dockerenv"):
+            url = self.DATABASE_URL_DOCKER
+        else:
+            url = self.DATABASE_URL
+        
+        # Adapt postgresql:// to postgresql+asyncpg://
         if url.startswith("postgresql://"):
             url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
         return url

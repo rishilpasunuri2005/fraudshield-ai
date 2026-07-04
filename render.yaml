@@ -6,32 +6,46 @@ services:
   - type: web
     name: fraudshield-backend
     env: docker
-    dockerContext: backend
-    dockerfilePath: backend/Dockerfile # Path relative to the repository root
+    dockerContext: .  # Build context is the repo root
+    dockerfilePath: backend/Dockerfile
     plan: free
     healthCheckPath: /health
     envVars:
       - key: ENV
         value: production
-      # Automatically binds PostgreSQL connection string
+      # Render injects DATABASE_URL as postgresql:// — config.py auto-converts to asyncpg
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fraudshield-postgres
+          property: connectionString
+      # Also set the Docker variant so config.py get_database_url works in production
       - key: DATABASE_URL_DOCKER
         fromDatabase:
           name: fraudshield-postgres
           property: connectionString
-      # Automatically binds Redis connection string from the services array
+      # Redis connection string
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: fraudshield-redis
+          property: connectionString
       - key: REDIS_URL_DOCKER
         fromService:
           type: redis
           name: fraudshield-redis
           property: connectionString
       - key: JWT_SECRET
-        generateValue: true # Generates a random secure key automatically
+        generateValue: true
       - key: JWT_ALGORITHM
         value: HS256
       - key: NVIDIA_API_KEY
-        sync: false # You will input your NVIDIA API key in the Render dashboard
+        sync: false # Input your NVIDIA API key in the Render dashboard
       - key: NVIDIA_MODEL
         value: meta/llama-3.3-70b-instruct
+      - key: LOG_LEVEL
+        value: INFO
+      - key: SQLITE_FALLBACK
+        value: "false"
 
   # 2. Redis Cache Service (Rate Limiter)
   - type: redis

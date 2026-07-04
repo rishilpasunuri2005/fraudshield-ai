@@ -21,14 +21,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install uv package manager
 COPY --from=ghcr.io/astral-sh/uv:0.11.19 /uv /uvx /bin/
 
-# Copy dependencies
-COPY requirements.txt .
+# Copy dependencies (relative to dockerContext)
+COPY backend/requirements.txt .
 
 # Install dependencies using uv
 RUN uv pip install --no-cache --system -r requirements.txt
 
 # Copy source code into a backend folder so absolute imports like 'from backend.api import ...' work
-COPY . /app/backend
+COPY backend/ /app/backend
 
 # Expose port
 EXPOSE 8000
