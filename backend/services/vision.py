@@ -13,8 +13,8 @@ async def analyze_screenshot(image_bytes: bytes) -> str:
         return "Mock Vision Analysis: Detected suspicious request for urgent payment in screenshot."
         
     try:
-        # Llama 3.2 90B Vision Instruct is commonly available for vision tasks in NIM
-        vision_model = ChatNVIDIA(model="meta/llama-3.2-90b-vision-instruct")
+        # Initialize the vision model dynamically from config
+        vision_model = ChatNVIDIA(model=settings.NVIDIA_VISION_MODEL)
         
         image_b64 = base64.b64encode(image_bytes).decode('utf-8')
         
