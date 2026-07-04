@@ -54,7 +54,7 @@ export default function VoiceScamDetector() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/analyze/audio`, {
+      const response = await fetch(`${API_URL}/scan/audio`, {
         method: "POST",
         body: formData,
       });

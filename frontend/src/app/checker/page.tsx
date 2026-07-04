@@ -34,7 +34,7 @@ export default function ThreatChecker() {
     setResult(null);
     
     try {
-      const response = await fetch(`${API_URL}/analyze/text`, {
+      const response = await fetch(`${API_URL}/scan/text`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: inputText })
@@ -62,7 +62,7 @@ export default function ThreatChecker() {
     setResult(null);
     
     try {
-      const response = await fetch(`${API_URL}/analyze/url`, {
+      const response = await fetch(`${API_URL}/scan/url`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: inputUrl })
@@ -93,7 +93,7 @@ export default function ThreatChecker() {
     formData.append("file", selectedImage);
     
     try {
-      const response = await fetch(`${API_URL}/analyze/image`, {
+      const response = await fetch(`${API_URL}/scan/image`, {
         method: "POST",
         body: formData,
       });

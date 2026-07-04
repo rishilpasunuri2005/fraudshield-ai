@@ -11,7 +11,7 @@ from backend.agents.image_agent import analyze_screenshot
 from backend.utils.rate_limiter import RateLimiter
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/analyze", tags=["AI Analysis Services"])
+router = APIRouter(prefix="/scan", tags=["AI Analysis Services"])
 
 # Define paths for uploaded media files
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads")
