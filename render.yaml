@@ -39,7 +39,7 @@ services:
       - key: JWT_ALGORITHM
         value: HS256
       - key: NVIDIA_API_KEY
-        sync: false # Input your NVIDIA API key in the Render dashboard
+        value: your-nvidia-api-key-here  # Update this in the Render dashboard with your real key
       - key: NVIDIA_MODEL
         value: meta/llama-3.3-70b-instruct
       - key: LOG_LEVEL
