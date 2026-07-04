@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, Loader2 } from "lucide-react";
-import { API_URL } from "../../lib/api";
+import { Sparkles, Loader2, Database } from "lucide-react";
+import { API_URL } from "../lib/api";
 
 interface ExplainWithAIProps {
   query: string;
@@ -37,31 +37,37 @@ export default function ExplainWithAI({ query }: ExplainWithAIProps) {
   };
 
   return (
-    <div className="mt-6 border-t border-zinc-850 pt-6">
-      <div className="flex items-center justify-between mb-4">
-        <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
-          <Sparkles className="h-4 w-4 text-emerald-500" /> Deep Legal & Policy Explanation
+    <div className="mt-8 border-t border-border pt-8">
+      <div className="flex items-center justify-between mb-6">
+        <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] flex items-center gap-2 font-mono">
+          <Database className="h-3 w-3" /> {"// RAG KNOWLEDGE BASE QUERY"}
         </h4>
         {!explanation && (
           <button
             onClick={handleExplain}
             disabled={loading}
-            className="px-4 py-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold text-[10px] hover:bg-emerald-500/20 transition-all flex items-center gap-2 uppercase tracking-wider"
+            className="px-6 py-2 rounded-sm border border-border bg-[#000000] text-zinc-300 font-bold text-[10px] hover:text-white hover:border-primary transition-all flex items-center gap-2 uppercase tracking-widest font-mono disabled:opacity-50"
           >
-            {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Query RAG Knowledge Base"}
+            {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+            {loading ? "SEARCHING VECTOR DB..." : "EXTRACT DEEP CONTEXT"}
           </button>
         )}
       </div>
 
       {error && (
-        <p className="text-xs text-red-400">{error}</p>
+        <p className="text-[10px] font-mono text-red-500 font-bold bg-red-500/10 px-4 py-2 rounded-sm border border-red-500/20">{error}</p>
       )}
 
       {explanation && (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
-          <p className="text-sm text-zinc-300 whitespace-pre-wrap leading-relaxed">
-            {explanation}
-          </p>
+        <div className="bg-[#000000] border border-border rounded-sm overflow-hidden">
+          <div className="flex items-center px-4 py-2 border-b border-border bg-[#030303]">
+             <span className="text-[9px] font-mono text-primary uppercase tracking-widest">RAG_OUTPUT.md</span>
+          </div>
+          <div className="p-6">
+            <p className="text-xs font-mono text-zinc-300 whitespace-pre-wrap leading-relaxed">
+              {explanation}
+            </p>
+          </div>
         </div>
       )}
     </div>

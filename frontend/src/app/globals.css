@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #080808;
-  --foreground: #f4f4f5;
-  --card: #0d0d0e;
-  --card-foreground: #f4f4f5;
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #050505;
+  --card-foreground: #ffffff;
   --primary: #00ff66;
   --primary-foreground: #000000;
-  --muted: #121214;
-  --muted-foreground: #8a8a93;
-  --accent: #00e5ff;
+  --muted: #111111;
+  --muted-foreground: #888888;
+  --accent: #00ff66;
   --accent-foreground: #000000;
-  --destructive: #ef4444;
-  --destructive-foreground: #f4f4f5;
-  --border: #1f1f23;
+  --destructive: #ff3333;
+  --destructive-foreground: #ffffff;
+  --border: #1a1a1a;
 }
 
 @theme inline {
@@ -51,17 +51,17 @@
   --color-teal-500: #00ff66;
   --color-teal-600: #00cc52;
 
-  --color-indigo-50: rgba(0, 229, 255, 0.05);
-  --color-indigo-100: rgba(0, 229, 255, 0.1);
-  --color-indigo-200: rgba(0, 229, 255, 0.2);
-  --color-indigo-300: #33ebff;
-  --color-indigo-400: #00e5ff;
-  --color-indigo-500: #00e5ff;
-  --color-indigo-600: #00b2cc;
-  --color-indigo-700: #008099;
+  --color-indigo-50: rgba(136, 136, 136, 0.05);
+  --color-indigo-100: rgba(136, 136, 136, 0.1);
+  --color-indigo-200: rgba(136, 136, 136, 0.2);
+  --color-indigo-300: #aaaaaa;
+  --color-indigo-400: #cccccc;
+  --color-indigo-500: #ffffff;
+  --color-indigo-600: #cccccc;
+  --color-indigo-700: #aaaaaa;
 
-  --color-pink-400: #00e5ff;
-  --color-pink-500: #00e5ff;
+  --color-pink-400: #00ff66;
+  --color-pink-500: #00ff66;
 
   /* Force sharp tech border radii globally */
   --radius-none: 0px;
@@ -80,58 +80,65 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  /* CyberShade radial neon glows + subtle grid dot overlay */
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(0, 255, 102, 0.03) 0%, transparent 45%),
-    radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
-    radial-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 24px 24px;
-  background-attachment: fixed;
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Glassmorphism helpers */
+/* Glassmorphism helpers - Firescrape style */
 .glass {
-  background: rgba(13, 13, 14, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(5, 5, 5, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);
 }
 
 .glass-emerald {
   background: rgba(0, 255, 102, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 255, 102, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 255, 102, 0.2);
 }
 
 .glass-red {
-  background: rgba(239, 68, 68, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(239, 68, 68, 0.15);
+  background: rgba(255, 51, 51, 0.03);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 51, 51, 0.2);
 }
 
 .glass-card {
-  background: rgba(13, 13, 14, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(5, 5, 5, 0.95);
   border: 1px solid var(--border);
   border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Gradient Texts */
+.text-gradient-primary {
+  background: linear-gradient(to right, #ffffff, #888888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(to right, #00ff66, #00cc52);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(8, 8, 8, 0.5);
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(138, 138, 147, 0.2);
-  border-radius: 2px;
+  background: #222222;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 102, 0.4);
+  background: #00ff66;
 }
