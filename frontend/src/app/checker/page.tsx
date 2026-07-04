@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { Search, Globe, AlertTriangle, ShieldCheck, HelpCircle, Loader2 } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Search, Globe, Image as ImageIcon, AlertTriangle, ShieldCheck, Loader2, Upload } from "lucide-react";
 import { API_URL } from "../../lib/api";
+import ExplainWithAI from "../../components/ExplainWithAI";
 
 interface AnalysisResult {
   risk_score: number;
@@ -14,12 +15,15 @@ interface AnalysisResult {
 }
 
 export default function ThreatChecker() {
-  const [activeTab, setActiveTab] = useState<"text" | "url">("text");
+  const [activeTab, setActiveTab] = useState<"text" | "url" | "image">("text");
   const [inputText, setInputText] = useState("");
   const [inputUrl, setInputUrl] = useState("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAnalyzeText = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +80,36 @@ export default function ThreatChecker() {
       setLoading(false);
     }
   };
+  
+  const handleAnalyzeImage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedImage) return;
+    
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    
+    const formData = new FormData();
+    formData.append("file", selectedImage);
+    
+    try {
+      const response = await fetch(`${API_URL}/analyze/image`, {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.detail || "Failed to analyze image.");
+      }
+    } catch (err) {
+      setError("Unable to connect to the backend analysis server.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getRiskColor = (score: number) => {
     if (score < 30) return "text-emerald-400 border-emerald-500/20 bg-emerald-500/5";
@@ -120,11 +154,21 @@ export default function ThreatChecker() {
         >
           <Globe className="h-4 w-4" /> Link URL Scan
         </button>
+        <button
+          onClick={() => { setActiveTab("image"); setResult(null); setError(null); }}
+          className={`px-4 py-2.5 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
+            activeTab === "image" 
+              ? "border-emerald-500 text-emerald-400" 
+              : "border-transparent text-zinc-400 hover:text-zinc-200"
+          }`}
+        >
+          <ImageIcon className="h-4 w-4" /> Screenshot Scan
+        </button>
       </div>
 
       {/* Input Form */}
       <div className="glass-card p-6 rounded-xl border border-zinc-850">
-        {activeTab === "text" ? (
+        {activeTab === "text" && (
           <form onSubmit={handleAnalyzeText} className="space-y-4">
             <label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest">
               Suspicious Message Text
@@ -147,7 +191,9 @@ export default function ThreatChecker() {
               </button>
             </div>
           </form>
-        ) : (
+        )}
+        
+        {activeTab === "url" && (
           <form onSubmit={handleAnalyzeUrl} className="space-y-4">
             <label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest">
               Suspicious Domain Link
@@ -167,6 +213,47 @@ export default function ThreatChecker() {
                 className="px-5 py-2.5 rounded-lg bg-emerald-500 text-zinc-950 font-bold text-xs hover:bg-emerald-400 transition-all flex items-center gap-2 disabled:opacity-50"
               >
                 {loading ? <Loader2 className="h-4.5 w-4.5 animate-spin" /> : "Verify Link"}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {activeTab === "image" && (
+          <form onSubmit={handleAnalyzeImage} className="space-y-4">
+            <label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest">
+              Suspicious Screenshot Upload
+            </label>
+            <div 
+              className="border-2 border-dashed border-zinc-800 rounded-lg p-8 text-center bg-zinc-900/50 hover:bg-zinc-900 transition-all cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <input 
+                type="file" 
+                ref={fileInputRef}
+                className="hidden" 
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setSelectedImage(e.target.files[0]);
+                  }
+                }}
+              />
+              <Upload className="h-8 w-8 text-zinc-500 mx-auto mb-3" />
+              {selectedImage ? (
+                <p className="text-sm font-semibold text-emerald-400">{selectedImage.name}</p>
+              ) : (
+                <p className="text-sm text-zinc-400">Click to upload a screenshot (PNG, JPG)</p>
+              )}
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] text-zinc-500 font-semibold uppercase">Powered by NVIDIA Vision Agent</span>
+              <button
+                type="submit"
+                disabled={loading || !selectedImage}
+                className="px-5 py-2.5 rounded-lg bg-emerald-500 text-zinc-950 font-bold text-xs hover:bg-emerald-400 transition-all flex items-center gap-2 disabled:opacity-50"
+              >
+                {loading ? <Loader2 className="h-4.5 w-4.5 animate-spin" /> : "Scan Screenshot"}
               </button>
             </div>
           </form>
@@ -206,7 +293,7 @@ export default function ThreatChecker() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Model Explanation</h4>
-              <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-900/20 border border-zinc-850 p-4 rounded-lg">
+              <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-900/20 border border-zinc-850 p-4 rounded-lg whitespace-pre-wrap">
                 {result.reasoning}
               </p>
             </div>
@@ -234,6 +321,9 @@ export default function ThreatChecker() {
               </div>
             </div>
           )}
+
+          {/* RAG Integration */}
+          <ExplainWithAI query={`Explain the policy and rules regarding this fraud category: ${result.category}. Why is this considered high risk? Provide context on similar known scam patterns.`} />
         </div>
       )}
     </div>

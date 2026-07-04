@@ -36,6 +36,9 @@ class Settings(BaseSettings):
     # AI Configuration (NVIDIA NIM API)
     NVIDIA_API_KEY: str = ""
     NVIDIA_MODEL: str = "meta/llama-3.3-70b-instruct"
+    
+    # Vector Database
+    CHROMA_PERSIST_DIRECTORY: str = "./data/embeddings"
 
     # Logging
     LOG_LEVEL: str = "INFO"

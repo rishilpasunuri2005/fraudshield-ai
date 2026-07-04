@@ -6,8 +6,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 from backend.core.config import settings
 from backend.core.logging import setup_logging
 from backend.database.init_db import init_db
-from backend.api.routers import auth, analyze, reports, dashboard
-
+from backend.api.routers import auth, analyze, reports, dashboard, rag
 # Setup logging config
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -50,5 +49,6 @@ app.include_router(auth.router)
 app.include_router(analyze.router)
 app.include_router(reports.router)
 app.include_router(dashboard.router)
+app.include_router(rag.router, prefix="/rag", tags=["RAG"])
 
 logger.info("Routers mounted successfully. API initialization complete.")
