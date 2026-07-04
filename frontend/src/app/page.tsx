@@ -1,199 +1,147 @@
 "use client";
 
 import Link from "next/link";
-import { Shield, Play, Terminal, Layers, Search, Server } from "lucide-react";
+import { Shield, Play, Terminal, Layers, Search, Server, Activity, Lock } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col items-center justify-center pt-24 pb-32 max-w-[1000px] mx-auto text-center space-y-16">
+    <div className="flex flex-col items-center justify-center pt-24 pb-32 w-full mx-auto text-center space-y-24">
       
-      {/* Top Badge */}
-      <div className="inline-flex items-center gap-4 px-4 py-1.5 bg-[#050505] border border-border rounded-sm">
-        <div className="flex items-center gap-2">
-          <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest font-mono">
-            TRUSTED BY LAW ENFORCEMENT
-          </span>
-        </div>
-        <div className="h-3 w-px bg-border" />
-        <span className="text-[10px] font-bold text-primary uppercase tracking-widest font-mono">
-          99.9% UPTIME
-        </span>
-      </div>
-
       {/* Hero Headline */}
-      <div className="space-y-6">
+      <div className="space-y-8 max-w-[1000px] px-6">
+        <div className="inline-flex items-center gap-4 px-5 py-2 bg-accent/10 border border-accent/20 rounded-full shadow-[0_0_20px_rgba(0,102,255,0.2)]">
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-accent animate-pulse shadow-[0_0_8px_rgba(0,102,255,0.8)]" />
+            <span className="text-[10px] font-bold text-accent uppercase tracking-widest font-mono">
+              SECURE INFRASTRUCTURE
+            </span>
+          </div>
+        </div>
+
         <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-white leading-[1.1]">
-          Ultimate Public Safety<br />
-          <span className="text-gradient-primary">AI Infrastructure</span>
+          Next-Gen AI for<br />
+          <span className="text-gradient-accent">Cyber Defense</span>
         </h1>
         
         <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto font-mono leading-relaxed">
-          Extract clean analysis, structured JSON, and threat metrics from any URL, image, or text. The fastest <span className="text-white border-b border-white">fraud detection API</span> for preventing digital arrest networks and syndicates.
+          Extract, analyze, and neutralize digital threats in real-time. The ultimate <span className="text-white border-b border-white">intelligence platform</span> built for modern law enforcement and proactive citizen defense.
         </p>
-      </div>
 
-      {/* CTA Buttons */}
-      <div className="flex flex-wrap justify-center gap-6 mt-8">
-        <Link
-          href="/checker"
-          className="px-8 py-3 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] hover:bg-zinc-200 transition-colors flex items-center gap-3 font-mono"
-        >
-          <Play className="h-3 w-3" fill="currentColor" /> START SCANNING FREE
-        </Link>
-        <button
-          onClick={() => {
-            localStorage.setItem("user-role", "police");
-            window.location.href = "/police";
-          }}
-          className="px-8 py-3 bg-black border border-border text-zinc-300 font-bold text-xs uppercase tracking-[0.2em] hover:text-white hover:border-zinc-700 transition-colors font-mono"
-        >
-          SEE HOW IT WORKS
-        </button>
-      </div>
-
-      {/* Metrics */}
-      <div className="flex justify-center gap-16 pt-12 pb-16 w-full border-b border-border/50">
-        <div className="text-center">
-          <p className="text-3xl font-bold text-white mb-1">99.9%</p>
-          <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em]">UPTIME SLA</p>
-        </div>
-        <div className="text-center">
-          <p className="text-3xl font-bold text-white mb-1">&lt;2s</p>
-          <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em]">AVG RESPONSE</p>
-        </div>
-        <div className="text-center">
-          <p className="text-3xl font-bold text-white mb-1">1M+</p>
-          <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em]">SCANS PROCESSED</p>
+        {/* CTA Buttons */}
+        <div className="flex flex-wrap justify-center gap-6 pt-4">
+          <Link
+            href="/login"
+            className="px-8 py-4 bg-accent text-white font-bold text-xs uppercase tracking-[0.2em] rounded-lg shadow-[0_0_30px_rgba(0,102,255,0.3)] hover:bg-accent/90 hover:shadow-[0_0_40px_rgba(0,102,255,0.5)] transition-all font-mono"
+          >
+            ACCESS PORTALS
+          </Link>
+          <Link
+            href="/checker"
+            className="px-8 py-4 bg-[#050505] border border-border text-zinc-300 font-bold text-xs uppercase tracking-[0.2em] rounded-lg hover:text-white hover:border-zinc-700 transition-colors font-mono"
+          >
+            RUN PUBLIC SCAN
+          </Link>
         </div>
       </div>
 
-      {/* Video / Terminal Demo Area */}
-      <div className="w-full max-w-4xl mx-auto mt-16 text-left">
-        <div className="glass-card overflow-hidden">
-          <div className="flex items-center px-4 py-3 border-b border-border bg-[#030303]">
-            <div className="flex gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-              <div className="w-2.5 h-2.5 rounded-full bg-primary/80" />
+      {/* Metrics Bento Row */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl px-6">
+        <div className="glass-panel p-8 text-center flex flex-col items-center justify-center">
+          <Activity className="h-6 w-6 text-accent mb-4" />
+          <p className="text-4xl font-bold text-white mb-2 font-mono">99.9%</p>
+          <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] uppercase">Uptime SLA</p>
+        </div>
+        <div className="glass-panel p-8 text-center flex flex-col items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent" />
+          <Terminal className="h-6 w-6 text-primary mb-4 relative z-10" />
+          <p className="text-4xl font-bold text-white mb-2 font-mono relative z-10">&lt;1.2s</p>
+          <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] uppercase relative z-10">Threat Extraction</p>
+        </div>
+        <div className="glass-panel p-8 text-center flex flex-col items-center justify-center">
+          <Shield className="h-6 w-6 text-accent mb-4" />
+          <p className="text-4xl font-bold text-white mb-2 font-mono">1.2M+</p>
+          <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] uppercase">Scans Processed</p>
+        </div>
+      </div>
+
+      {/* Main Bento Grid */}
+      <div className="w-full max-w-6xl px-6 text-left">
+        <div className="pt-16 pb-12 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            Comprehensive <span className="text-primary">Intelligence</span> Network
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
+          {/* Large Hero Card - Spans 2 cols, 2 rows */}
+          <div className="glass-panel md:col-span-2 md:row-span-2 p-10 flex flex-col relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-[80px] -mr-10 -mt-10 transition-all group-hover:bg-accent/20" />
+            
+            <div className="flex items-center gap-3 mb-6 relative z-10">
+              <div className="h-10 w-10 rounded-xl bg-accent/20 flex items-center justify-center">
+                <Search className="h-5 w-5 text-accent" />
+              </div>
+              <h3 className="text-xl font-bold text-white font-mono uppercase tracking-widest">ASK AI / RAG Oracle</h3>
             </div>
-            <div className="mx-auto text-[10px] font-mono text-zinc-500">fraudshield-cli</div>
-          </div>
-          <div className="p-8 bg-[#050505] font-mono text-xs sm:text-sm leading-relaxed text-zinc-300">
-            <div className="text-primary mb-4">$ fraudshield analyze screenshot.png</div>
-            <div className="text-zinc-500 mb-1">→ Initializing Vision Model...</div>
-            <div className="text-zinc-500 mb-1">→ Extracting OCR context...</div>
-            <div className="text-zinc-500 mb-4">→ Analyzing threat vectors...</div>
-            <div className="text-primary mb-4">✓ Analysis complete in 1.2s</div>
-            <pre className="text-emerald-300">
-{`{
-  "category": "Likely Fraud",
-  "risk_score": 92.5,
-  "confidence": 0.95,
-  "indicators": ["pan card", "sbi", "urgent request"],
-  "recommendation": "Block immediately."
-}`}
-            </pre>
-          </div>
-        </div>
-      </div>
+            
+            <p className="text-sm text-zinc-400 leading-relaxed font-mono relative z-10 max-w-md">
+              Query our massive knowledge base of historical threats, cybercrime patterns, and legal policies using natural language. The system instantly retrieves contextual evidence to aid investigations.
+            </p>
 
-      {/* Hate Section Header */}
-      <div className="pt-32 text-center">
-        <p className="text-[10px] text-zinc-500 font-mono mb-4">// the problem</p>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white">
-          Why Citizens <span className="text-red-500">Hate</span> Fraud Reporting
-        </h2>
-      </div>
-
-      {/* Problem Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-left pt-12">
-        <div className="glass-card p-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
-              <span className="text-xs font-bold font-mono">!</span>
+            <div className="mt-auto bg-[#000000] border border-border rounded-lg p-5 font-mono text-xs leading-relaxed text-zinc-300 relative z-10">
+              <div className="text-accent mb-2">$ query_database --target="Digital Arrest"</div>
+              <div className="text-primary">✓ Retrieved 14 matched cases from Mumbai jurisdiction. Confidence: 94%.</div>
             </div>
-            <h3 className="text-sm font-bold text-white font-mono uppercase">ENDLESS SETUP TIME</h3>
           </div>
-          <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-            Days wasted trying to file FIRs, gathering evidence, and finding the right jurisdiction.
-          </p>
-        </div>
-        <div className="glass-card p-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
-              <span className="text-xs font-bold font-mono">$</span>
+
+          {/* Small Top Right Card */}
+          <div className="glass-panel p-8 flex flex-col justify-between group hover:border-primary/40 transition-colors">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <Terminal className="h-6 w-6 text-primary" />
+                <span className="text-[9px] font-bold text-primary bg-primary/10 px-2 py-1 rounded uppercase">Active</span>
+              </div>
+              <h3 className="text-sm font-bold text-white font-mono uppercase tracking-widest mb-2">JSON Extraction</h3>
+              <p className="text-xs text-zinc-500 leading-relaxed font-mono">
+                Clean, typed responses with risk scores and indicators.
+              </p>
             </div>
-            <h3 className="text-sm font-bold text-white font-mono uppercase">FINANCIAL LOSS</h3>
           </div>
-          <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-            Victims lose life savings while waiting for manual analysis of digital arrest threats and phishing links.
-          </p>
-        </div>
-        <div className="glass-card p-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
-              <span className="text-xs font-bold font-mono">×</span>
+
+          {/* Small Bottom Right Card */}
+          <div className="glass-panel p-8 flex flex-col justify-between group hover:border-accent/40 transition-colors">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <Layers className="h-6 w-6 text-accent" />
+              </div>
+              <h3 className="text-sm font-bold text-white font-mono uppercase tracking-widest mb-2">Graph Clustering</h3>
+              <p className="text-xs text-zinc-500 leading-relaxed font-mono">
+                Map syndicates automatically using Neo4j graph databases.
+              </p>
             </div>
-            <h3 className="text-sm font-bold text-white font-mono uppercase">CONSTANT BREAKAGE</h3>
           </div>
-          <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-            Scammers constantly change their tactics, using WhatsApp, Telegram, and deepfakes to evade old static rules.
-          </p>
+
+          {/* Bottom Wide Card - Spans 3 cols */}
+          <div className="glass-panel md:col-span-3 p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
+            
+            <div className="flex-1 space-y-4 relative z-10">
+              <div className="flex items-center gap-3">
+                <Lock className="h-6 w-6 text-red-500" />
+                <h3 className="text-lg font-bold text-white font-mono uppercase tracking-widest">Endless Setup & Breakage</h3>
+              </div>
+              <p className="text-sm text-zinc-400 leading-relaxed font-mono max-w-2xl">
+                Legacy systems fail because scammers constantly change tactics using deepfakes and burner VoIPs. Defensys AI eliminates setup time and adapts in real-time.
+              </p>
+            </div>
+
+            <Link href="/checker" className="px-8 py-4 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-lg hover:bg-zinc-200 transition-colors font-mono whitespace-nowrap relative z-10">
+              TRY THE SCANNER
+            </Link>
+          </div>
+
         </div>
       </div>
-
-      {/* Solution Section Header */}
-      <div className="pt-32 text-center">
-        <p className="text-[10px] text-zinc-500 font-mono mb-4">// the solution</p>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white">
-          AI-Powered <span className="border-b border-white">Defense Infrastructure</span>
-        </h2>
-        <p className="text-xs text-zinc-500 font-mono mt-6">
-          Everything you need to extract and analyze threats. Built for <span className="text-zinc-300 border-b border-zinc-700">modern public safety</span>.
-        </p>
-      </div>
-
-      {/* Feature Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full text-left pt-12 pb-32">
-        <div className="glass-card p-8 group hover:border-primary/50 transition-colors">
-          <div className="flex items-center gap-3 mb-4">
-            <Terminal className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors" />
-            <h3 className="text-xs font-bold text-white font-mono uppercase tracking-widest">MULTI-MODAL EXTRACTION</h3>
-          </div>
-          <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-            Extract text, visual elements, and metadata from screenshots and audio. Perfect for AI analysis.
-          </p>
-        </div>
-        <div className="glass-card p-8 group hover:border-primary/50 transition-colors">
-          <div className="flex items-center gap-3 mb-4">
-            <Layers className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors" />
-            <h3 className="text-xs font-bold text-white font-mono uppercase tracking-widest">GRAPH CLUSTERING</h3>
-          </div>
-          <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-            Automatically map out syndicates using Neo4j graph databases to connect phones, UPI IDs, and IPs.
-          </p>
-        </div>
-        <div className="glass-card p-8 group hover:border-primary/50 transition-colors">
-          <div className="flex items-center gap-3 mb-4">
-            <Search className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors" />
-            <h3 className="text-xs font-bold text-white font-mono uppercase tracking-widest">SEARCH & ANALYZE</h3>
-          </div>
-          <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-            Search internal RAG databases to explain fraud patterns and match them against known historical cases.
-          </p>
-        </div>
-        <div className="glass-card p-8 group hover:border-primary/50 transition-colors">
-          <div className="flex items-center gap-3 mb-4">
-            <Server className="h-5 w-5 text-zinc-400 group-hover:text-primary transition-colors" />
-            <h3 className="text-xs font-bold text-white font-mono uppercase tracking-widest">STRUCTURED JSON OUTPUT</h3>
-          </div>
-          <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-            Get clean, typed responses with risk scores, categories, indicators, and exact threat recommendations.
-          </p>
-        </div>
-      </div>
-
     </div>
   );
 }

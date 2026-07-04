@@ -30,6 +30,7 @@ export default function TopNavLayout({ children }: { children: React.ReactNode }
   const navItems = [
     { name: "FEATURES", href: "/", roles: ["citizen", "police"] },
     { name: "DASHBOARD", href: "/dashboard", roles: ["citizen"] },
+    { name: "ASK AI", href: "/ask-ai", roles: ["citizen", "police"] },
     { name: "FRAUD CHECKER", href: "/checker", roles: ["citizen"] },
     { name: "POLICE PORTAL", href: "/police", roles: ["police"] },
     { name: "ADMIN", href: "/admin", roles: ["citizen", "police"] },
@@ -42,9 +43,9 @@ export default function TopNavLayout({ children }: { children: React.ReactNode }
         <div className="max-w-[1400px] mx-auto flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-3 group">
-              <Shield className="h-5 w-5 text-primary group-hover:drop-shadow-[0_0_8px_rgba(0,255,102,0.8)] transition-all duration-300" />
+              <Shield className="h-5 w-5 text-primary group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.8)] transition-all duration-300" />
               <span className="font-bold text-sm tracking-[0.2em] font-mono text-white">
-                FRAUDSHIELD_
+                DEFENSYS_AI
               </span>
             </Link>
             
@@ -70,18 +71,16 @@ export default function TopNavLayout({ children }: { children: React.ReactNode }
 
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 bg-zinc-900/50 border border-border rounded-[2px] px-3 py-1.5 text-[9px] text-zinc-400 font-mono tracking-widest">
-              <div className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(0,255,102,0.6)]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(0,229,255,0.6)]" />
               <span>SYSTEM ONLINE</span>
             </div>
             
-            <select
-              value={role}
-              onChange={(e) => handleRoleChange(e.target.value as "citizen" | "police")}
-              className="text-[10px] font-bold uppercase font-mono bg-black border border-border rounded-[2px] px-3 py-1.5 text-zinc-300 hover:text-white focus:outline-none focus:border-primary cursor-pointer transition-colors"
+            <Link 
+              href="/login"
+              className="text-[10px] font-bold uppercase font-mono bg-primary/10 border border-primary/30 rounded-sm px-4 py-1.5 text-primary hover:bg-primary/20 hover:text-white transition-colors"
             >
-              <option value="citizen">CITIZEN</option>
-              <option value="police">POLICE</option>
-            </select>
+              LOGIN
+            </Link>
             
             <button className="md:hidden text-zinc-400 hover:text-white" onClick={() => setMobileOpen(true)}>
               <Menu className="h-5 w-5" />
