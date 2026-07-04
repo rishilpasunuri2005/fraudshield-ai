@@ -1,7 +1,6 @@
 import logging
 import base64
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
-from langchain_core.messages import HumanMessage
+import httpx
 from backend.core.config import settings
 
 logger = logging.getLogger(__name__)
@@ -13,23 +12,41 @@ async def analyze_screenshot(image_bytes: bytes) -> str:
         return "Mock Vision Analysis: Detected suspicious request for urgent payment in screenshot."
         
     try:
-        # Initialize the vision model dynamically from config
-        vision_model = ChatNVIDIA(model=settings.NVIDIA_VISION_MODEL)
-        
+        model_name = getattr(settings, "NVIDIA_VISION_MODEL", "meta/llama-3.2-90b-vision-instruct")
         image_b64 = base64.b64encode(image_bytes).decode('utf-8')
         
         prompt = "You are a fraud detection expert. Analyze this screenshot. Is this a scam or phishing attempt? Detail the suspicious elements (e.g. urgent language, strange URLs, request for money)."
         
-        message = HumanMessage(
-            content=[
-                {"type": "text", "text": prompt},
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}"}}
-            ]
-        )
+        headers = {
+            "Authorization": f"Bearer {settings.NVIDIA_API_KEY}",
+            "Accept": "application/json"
+        }
         
-        response = vision_model.invoke([message])
-        return response.content
+        payload = {
+            "model": model_name,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}"}}
+                    ]
+                }
+            ],
+            "max_tokens": 1024
+        }
         
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://integrate.api.nvidia.com/v1/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=60.0
+            )
+            response.raise_for_status()
+            data = response.json()
+            return data["choices"][0]["message"]["content"]
+            
     except Exception as e:
         logger.error(f"Error in vision analysis: {e}")
         return f"Error analyzing screenshot: {str(e)}"
