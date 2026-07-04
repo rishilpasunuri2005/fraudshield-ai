@@ -11,136 +11,125 @@ import {
   FileText, 
   CheckCircle, 
   Clock, 
-  AlertTriangle 
+  AlertTriangle,
+  TrendingUp,
+  Activity,
+  Network
 } from "lucide-react";
-import { API_URL } from "../../lib/api";
+import { StatCard } from "@/components/StatCard";
+import { getDashboardStats } from "@/services/api";
+import { DashboardStats } from "@/types";
 
-interface Report {
-  id: number;
-  title: string;
-  description: string;
-  status: string;
-  risk_score: number;
-  created_at: string;
-}
-
-export default function CitizenDashboard() {
-  const [reports, setReports] = useState<Report[]>([]);
+export default function DashboardPage() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchReports() {
+    async function loadStats() {
       try {
-        const response = await fetch(`${API_URL}/report`);
-        if (response.ok) {
-          const data = await response.json();
-          setReports(data.slice(0, 5)); // show top 5 recent reports
-        }
+        const data = await getDashboardStats() as DashboardStats;
+        setStats(data);
       } catch (err) {
-        console.error("Failed to fetch reports:", err);
+        console.error("Failed to fetch stats", err);
       } finally {
         setLoading(false);
       }
     }
-    fetchReports();
+    loadStats();
   }, []);
 
   const tools = [
-    { name: "Scam Text/URL Checker", desc: "Scan suspicious text messages or link URLs", href: "/checker", icon: Search, color: "emerald" },
-    { name: "Screenshot Analyzer", desc: "OCR scan threat chats and bank messages", href: "/screenshot", icon: ImageIcon, color: "indigo" },
-    { name: "Voice Scam Detector", desc: "Transcribe extortive voice notes or calls", href: "/audio", icon: Mic, color: "pink" },
-    { name: "Report Fraud Case", desc: "File suspect UPIs and phones to cyber cells", href: "/report", icon: FileText, color: "teal" }
+    { name: "Scam Text Checker", desc: "Detect urgency and coercion in messages", href: "/analyze/text", icon: FileText, color: "emerald" },
+    { name: "Screenshot Analyzer", desc: "OCR scan threat chats and fake UIs", href: "/analyze/screenshot", icon: ImageIcon, color: "indigo" },
+    { name: "Voice Scam Detector", desc: "Identify deepfakes and extortive calls", href: "/analyze/audio", icon: Mic, color: "pink" },
+    { name: "URL Scanner", desc: "Check links for phishing and malware", href: "/analyze/url", icon: Search, color: "teal" }
   ];
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8 p-4 mt-8 w-full">
+
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+           <h1 className="text-3xl font-bold tracking-tight">Threat Dashboard</h1>
+           <p className="text-muted-foreground mt-1">Real-time overview of your security landscape.</p>
+        </div>
+        <div className="flex items-center gap-2 text-xs font-mono">
+           <span className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded">
+             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+             SYSTEM {stats?.systemStatus || 'ONLINE'}
+           </span>
+        </div>
+      </div>
+
+      {/* Stats Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title="Total Analyzed"
+          value={loading ? "..." : stats?.totalAnalyzed.toLocaleString() || "0"}
+          icon={Activity}
+          trend={{ value: 12, isPositive: true }}
+          description="vs last week"
+        />
+        <StatCard
+          title="Threats Prevented"
+          value={loading ? "..." : stats?.threatsPrevented.toLocaleString() || "0"}
+          icon={ShieldAlert}
+          trend={{ value: 8, isPositive: true }}
+          description="vs last week"
+        />
+        <StatCard
+          title="Active Networks"
+          value={loading ? "..." : stats?.activeNetworks || "0"}
+          icon={Network}
+        />
+        <StatCard
+          title="Avg. Response"
+          value="1.2s"
+          icon={Clock}
+          trend={{ value: 5, isPositive: false }}
+          description="speed improvement"
+        />
+      </div>
+
       {/* Alert Banner */}
-      <div className="glass-red p-4 rounded-xl flex gap-3 items-start">
+      <div className="glass-red p-4 rounded-xl flex gap-3 items-start border border-red-500/20 mt-8">
         <AlertTriangle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
         <div>
-          <h4 className="text-sm font-bold text-red-400">Extortion Alert: WhatsApp Extortion Calls</h4>
+          <h4 className="text-sm font-bold text-red-400">Critical Threat Alert: "Digital Arrest" Campaign</h4>
           <p className="text-xs text-zinc-400 mt-1">
-            Criminals are masquerading as CBI, Custom officials, or police requesting Aadhaar links under threat of digital arrest. Real police will never demand payments or keep you under digital arrest over WhatsApp or Skype video calls.
+            We are tracking a 400% spike in automated calls claiming to be from FedEx/Customs leading to Skype "interrogations". All law enforcement agencies are advised to update their filtering rules.
           </p>
         </div>
       </div>
 
-      {/* Grid of Tools */}
-      <div>
-        <h2 className="text-xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
-          <ShieldAlert className="h-5 w-5 text-emerald-500" /> Shield Diagnostics
+      {/* Quick Actions */}
+      <div className="pt-4">
+        <h2 className="text-lg font-bold text-zinc-100 mb-4 flex items-center gap-2 uppercase tracking-wider text-xs font-mono">
+          // Analysis Tools
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {tools.map((t) => {
             const Icon = t.icon;
             return (
               <Link 
                 key={t.name} 
                 href={t.href}
-                className="glass-card p-6 rounded-xl hover:border-zinc-700/80 transition-all flex items-center justify-between group"
+                className="glass-card p-6 rounded-xl hover:border-primary/50 transition-all flex flex-col group h-full"
               >
-                <div className="flex gap-4 items-center">
-                  <div className={`h-11 w-11 rounded-lg flex items-center justify-center border bg-zinc-900/80 border-zinc-800`}>
-                    <Icon className="h-5 w-5 text-zinc-300" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors">{t.name}</h4>
-                    <p className="text-xs text-zinc-400 mt-1">{t.desc}</p>
-                  </div>
+                <div className="h-10 w-10 rounded-lg flex items-center justify-center border bg-zinc-900/80 border-zinc-800 mb-4 group-hover:bg-primary/10 group-hover:border-primary/30 transition-colors">
+                  <Icon className="h-5 w-5 text-zinc-300 group-hover:text-primary transition-colors" />
                 </div>
-                <ArrowRight className="h-4 w-4 text-zinc-500 group-hover:translate-x-1 transition-all" />
+                <div>
+                  <h4 className="text-sm font-bold text-zinc-100 group-hover:text-primary transition-colors">{t.name}</h4>
+                  <p className="text-xs text-zinc-500 mt-1">{t.desc}</p>
+                </div>
               </Link>
             );
           })}
         </div>
       </div>
 
-      {/* Recent Submissions */}
-      <div className="glass-card rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-zinc-850 bg-zinc-900/30 flex justify-between items-center">
-          <h3 className="text-sm font-bold text-zinc-200">Your Filed Reports</h3>
-          <Link href="/report" className="text-xs text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
-            File New Report <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-        
-        {loading ? (
-          <div className="p-8 text-center text-xs text-zinc-500">Loading your complaints list...</div>
-        ) : reports.length === 0 ? (
-          <div className="p-8 text-center text-xs text-zinc-500">No complaints filed yet. Your reports will appear here.</div>
-        ) : (
-          <div className="divide-y divide-zinc-850">
-            {reports.map((r) => (
-              <div key={r.id} className="px-6 py-4 flex flex-col sm:flex-row justify-between sm:items-center gap-2 hover:bg-zinc-900/20 transition-all">
-                <div>
-                  <h4 className="text-sm font-semibold text-zinc-100">{r.title}</h4>
-                  <p className="text-xs text-zinc-400 truncate max-w-md mt-1">{r.description}</p>
-                </div>
-                
-                <div className="flex items-center gap-4 shrink-0 justify-between sm:justify-end">
-                  <div className="flex items-center gap-1.5">
-                    {r.status === "resolved" ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20 font-semibold uppercase tracking-wider">
-                        <CheckCircle className="h-3 w-3" /> Resolved
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/20 font-semibold uppercase tracking-wider">
-                        <Clock className="h-3 w-3" /> {r.status}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <div className="text-right">
-                    <span className={`text-xs font-bold ${r.risk_score > 75 ? "text-red-400" : "text-zinc-300"}`}>
-                      Risk Score: {r.risk_score.toFixed(0)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
