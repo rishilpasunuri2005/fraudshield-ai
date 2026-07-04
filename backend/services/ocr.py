@@ -103,5 +103,5 @@ def extract_text_from_image(file_path: str) -> str:
         except Exception:
             pass
             
-    # Default return for general screenshots
-    return DEMO_OCR_TEXTS["sbi_phishing_sms"]
+    # Default return for general screenshots if OCR fails
+    return ""

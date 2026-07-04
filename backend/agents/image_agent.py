@@ -29,23 +29,31 @@ async def analyze_screenshot(image_path: str) -> AgentPrediction:
     extracted_text = extract_text_from_image(image_path)
     logger.info(f"OCR Extracted Text: '{extracted_text}'")
     
-    if not extracted_text.strip():
-        return AgentPrediction(
-            risk_score=10.0,
-            confidence=0.90,
-            reasoning="OCR text extraction found no readable text inside the screenshot image.",
-            recommendation="Confirm that the image is a clear screenshot of a message, chat, or bank screen and try again.",
+    # 3. Analyze using text logic (baseline) if text exists
+    if extracted_text.strip():
+        prediction = await analyze_text(extracted_text)
+    else:
+        # Default empty prediction if no text
+        prediction = AgentPrediction(
+            risk_score=0.0,
+            confidence=0.0,
+            reasoning="No text extracted via OCR.",
+            recommendation="Review the vision analysis.",
             evidence={"extracted_text": ""},
-            category="Legitimate"
+            category="Unknown"
         )
-        
-    # 3. Analyze using text logic (baseline)
-    prediction = await analyze_text(extracted_text)
     
     # 4. Enhance with deep Vision model analysis
     try:
         vision_reasoning = await vision_analyze(image_bytes)
         prediction.reasoning = f"{prediction.reasoning}\n\nVision Model Deep Analysis:\n{vision_reasoning}"
+        
+        # If the text logic returned a low score but Vision detected something, we could ideally adjust the score
+        # For now, we will at least ensure the reasoning is updated.
+        if "scam" in vision_reasoning.lower() or "phishing" in vision_reasoning.lower():
+            prediction.risk_score = max(prediction.risk_score, 85.0)
+            prediction.category = "Likely Fraud"
+            
     except Exception as e:
         logger.warning(f"Vision model analysis failed: {e}")
     
