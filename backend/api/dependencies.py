@@ -1,4 +1,3 @@
-from typing import List, Generator
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import jwt
@@ -46,17 +45,3 @@ async def get_current_user(
             detail="Inactive user"
         )
     return user
-
-class RoleChecker:
-    """Enforces Role-Based Access Control (RBAC) on route endpoints."""
-    
-    def __init__(self, allowed_roles: List[str]):
-        self.allowed_roles = allowed_roles
-
-    def __call__(self, current_user: User = Depends(get_current_user)) -> User:
-        if current_user.role not in self.allowed_roles:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail=f"Action forbidden. Required roles: {self.allowed_roles}"
-            )
-        return current_user
