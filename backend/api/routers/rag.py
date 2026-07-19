@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from backend.rag.pipeline import query_rag, ingest_documents
-import logging
+import logging 
 
 logger = logging.getLogger(__name__)
 
