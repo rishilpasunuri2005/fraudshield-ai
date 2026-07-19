@@ -108,14 +108,11 @@ async def get_analytics(db: AsyncSession = Depends(get_db)):
             "reports": d.reported_count
         })
 
-    # Timeline trends
-    monthly_trends = []
-
     return {
         "heatmap": hot_spots,
         "flagged_phones": flagged_phones,
         "flagged_devices": flagged_devices,
-        "trends": monthly_trends
+        "trends": [],
     }
 
 @router.get("/fraud-network")

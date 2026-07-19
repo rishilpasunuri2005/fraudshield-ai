@@ -40,7 +40,6 @@ def extract_text_from_image(file_path: str) -> str:
     
     preprocessed_path = preprocess_image(file_path)
     
-    # 2. Try using PaddleOCR
     try:
         from paddleocr import PaddleOCR
         # Initialize PaddleOCR (uses English and disables logs)

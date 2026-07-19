@@ -45,7 +45,7 @@ class Neo4jService:
         try:
             from neo4j import GraphDatabase
             self.driver = GraphDatabase.driver(
-                settings.get_neo4j_uri,
+                settings.NEO4J_URI,
                 auth=(settings.NEO4J_USER, settings.NEO4J_PASSWORD)
             )
             # Verify connectivity

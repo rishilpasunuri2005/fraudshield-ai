@@ -15,13 +15,6 @@ from pydantic import BaseModel
 
 router = APIRouter(prefix="/report", tags=["Scam Reporting & Management"])
 
-class TransactionSchema(BaseModel):
-    amount: float
-    sender_bank: Optional[str] = None
-    receiver_bank: Optional[str] = None
-    receiver_upi: Optional[str] = None
-    transaction_reference: Optional[str] = None
-
 class ReportResponse(BaseModel):
     id: int
     title: str

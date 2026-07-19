@@ -1,4 +1,3 @@
-import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
@@ -38,13 +37,5 @@ class Settings(BaseSettings):
         if url.startswith("postgresql://"):
             url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
         return url
-
-    @property
-    def get_redis_url(self) -> str:
-        return self.REDIS_URL
-
-    @property
-    def get_neo4j_uri(self) -> str:
-        return self.NEO4J_URI
 
 settings = Settings()
