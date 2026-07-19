@@ -136,21 +136,7 @@ async def create_report(
         suspect_ip=payload.suspect_ip
     )
 
-    return ReportResponse(
-        id=new_complaint.id,
-        title=new_complaint.title,
-        description=new_complaint.description,
-        status=new_complaint.status,
-        risk_score=new_complaint.risk_score,
-        reporter_phone=new_complaint.reporter_phone,
-        reporter_email=new_complaint.reporter_email,
-        suspect_phone=new_complaint.suspect_phone,
-        suspect_upi=new_complaint.suspect_upi,
-        suspect_device_id=new_complaint.suspect_device_id,
-        suspect_ip=new_complaint.suspect_ip,
-        suspect_email=new_complaint.suspect_email,
-        created_at=str(new_complaint.created_at)
-    )
+    return ReportResponse.model_validate(new_complaint, from_attributes=True)
 
 @router.get("", response_model=List[ReportResponse])
 async def list_reports(
@@ -167,20 +153,6 @@ async def list_reports(
     complaints = result.scalars().all()
     
     return [
-        ReportResponse(
-            id=c.id,
-            title=c.title,
-            description=c.description,
-            status=c.status,
-            risk_score=c.risk_score,
-            reporter_phone=c.reporter_phone,
-            reporter_email=c.reporter_email,
-            suspect_phone=c.suspect_phone,
-            suspect_upi=c.suspect_upi,
-            suspect_device_id=c.suspect_device_id,
-            suspect_ip=c.suspect_ip,
-            suspect_email=c.suspect_email,
-            created_at=str(c.created_at)
-        )
+        ReportResponse.model_validate(c, from_attributes=True)
         for c in complaints
     ]

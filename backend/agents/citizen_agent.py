@@ -9,6 +9,13 @@ from backend.schemas.analyze import AgentPrediction
 
 logger = logging.getLogger(__name__)
 
+def _is_mock_key() -> bool:
+    return (
+        not settings.NVIDIA_API_KEY
+        or settings.NVIDIA_API_KEY.startswith("mock")
+        or "your-nvidia-api-key" in settings.NVIDIA_API_KEY
+    )
+
 # Heuristics for rule-based fallback scanner
 SCAM_KEYWORDS = {
     "Digital Arrest": [
@@ -80,12 +87,7 @@ async def analyze_text(text: str) -> AgentPrediction:
     logger.info("Agent 1 (Citizen Shield) starting text analysis...")
     
     # Check if we should use fallback heuristics
-    is_mock_key = (
-        not settings.NVIDIA_API_KEY 
-        or settings.NVIDIA_API_KEY.startswith("mock") 
-        or "your-nvidia-api-key" in settings.NVIDIA_API_KEY
-    )
-    if is_mock_key:
+    if _is_mock_key():
         logger.info("Using local heuristic scanner (mock key detected)")
         result = scan_text_heuristics(text)
         if result:
@@ -170,12 +172,7 @@ async def analyze_url(url: str) -> AgentPrediction:
             category="Bank Fraud"
         )
         
-    is_mock_key = (
-        not settings.NVIDIA_API_KEY 
-        or settings.NVIDIA_API_KEY.startswith("mock") 
-        or "your-nvidia-api-key" in settings.NVIDIA_API_KEY
-    )
-    if is_mock_key:
+    if _is_mock_key():
         return AgentPrediction(
             risk_score=15.0,
             confidence=0.95,

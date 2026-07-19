@@ -108,15 +108,8 @@ async def get_analytics(db: AsyncSession = Depends(get_db)):
             "reports": d.reported_count
         })
 
-    # Timeline trends (simulated monthly distributions for visual excellence)
-    monthly_trends = [
-        {"month": "Jan", "complaints": 12},
-        {"month": "Feb", "complaints": 19},
-        {"month": "Mar", "complaints": 32},
-        {"month": "Apr", "complaints": 45},
-        {"month": "May", "complaints": 78},
-        {"month": "Jun", "complaints": 95}
-    ]
+    # Timeline trends
+    monthly_trends = []
 
     return {
         "heatmap": hot_spots,

@@ -1,30 +1,8 @@
 import os
 import logging
-import numpy as np
 from backend.core.config import settings
 
 logger = logging.getLogger(__name__)
-
-# Fallback transcripts based on file names for hackathon demonstration/testing
-DEMO_TRANSCRIPTS = {
-    "digital_arrest": (
-        "This is Inspector Malhotra from Delhi Police Narcotics Division. "
-        "Your Aadhaar card was found in a package with 50 grams of MDMA. "
-        "You must remain on video call for digital arrest and verification. "
-        "Transfer fifty thousand rupees to security locker number 293847."
-    ),
-    "bank_fraud": (
-        "Dear customer, your bank account is suspended due to security reasons. "
-        "Please tell me the OTP sent to your mobile phone to verify your KYC details right now."
-    ),
-    "lottery": (
-        "Congratulations! Your mobile number won a lucky lottery prize of twenty five lakh rupees. "
-        "You need to pay five thousand rupees processing charge to claim your cash award."
-    ),
-    "upi_scam": (
-        "I am sending you a UPI link. Just scan this QR code and click pay to receive your cashback."
-    )
-}
 
 async def detect_voice_activity(file_path: str) -> bool:
     """Detects if human voice is present in the audio file using VAD (Silero or power fallback)."""
@@ -61,14 +39,7 @@ async def transcribe_audio_file(file_path: str) -> str:
     """Transcribes audio file to text using local Whisper model."""
     logger.info(f"Transcribing audio file: {file_path}...")
     
-    # 1. Check for filename-based mock matching first (for demos and tests)
-    base_name = os.path.basename(file_path).lower()
-    for key, text in DEMO_TRANSCRIPTS.items():
-        if key in base_name:
-            logger.info(f"Matched demo transcript key '{key}' from file name.")
-            return text
-
-    # 2. Local Whisper inference (open-source model)
+    # Local Whisper inference
     try:
         import whisper
         logger.info("Loading local Whisper model...")
@@ -79,7 +50,5 @@ async def transcribe_audio_file(file_path: str) -> str:
     except Exception as e:
         logger.error(f"Local Whisper transcription failed: {e}")
         
-    # Return a default transcript if everything fails
-    logger.warning("All transcription methods failed. Returning fallback scam alert text.")
-    return DEMO_TRANSCRIPTS["digital_arrest"]
+    return ""
 

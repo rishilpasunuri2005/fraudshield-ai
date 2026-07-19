@@ -1,27 +1,31 @@
 import logging
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from backend.core.config import settings
 from backend.core.logging import setup_logging
 from backend.database.init_db import init_db
 from backend.api.routers import auth, analyze, reports, dashboard, rag
-# Setup logging config
+from backend.utils.rate_limiter import limiter
+
 setup_logging()
 logger = logging.getLogger(__name__)
 
-# Initialize FastAPI application
 app = FastAPI(
     title="FraudShield AI API",
     description="Digital Public Safety Intelligence Platform API",
     version="1.0.0"
 )
 
-# Configure CORS Middleware
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, replace with specific frontend domains
+    allow_origins=["*"],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],

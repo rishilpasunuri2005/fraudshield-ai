@@ -2,23 +2,23 @@ import os
 import shutil
 import uuid
 import logging
-from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
+from fastapi import APIRouter, UploadFile, File, HTTPException, status
 
 from backend.schemas.analyze import AgentPrediction, TextAnalysisRequest, UrlAnalysisRequest
 from backend.agents.citizen_agent import analyze_text, analyze_url
 from backend.agents.voice_agent import analyze_voice_scam
 from backend.agents.image_agent import analyze_screenshot
-from backend.utils.rate_limiter import RateLimiter
+from backend.utils.rate_limiter import limiter
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/scan", tags=["AI Analysis Services"])
 
-# Define paths for uploaded media files
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@router.post("/text", response_model=AgentPrediction, dependencies=[Depends(RateLimiter(times=20, seconds=60))])
-async def analyze_text_endpoint(payload: TextAnalysisRequest):
+@router.post("/text", response_model=AgentPrediction)
+@limiter.limit("20/minute")
+async def analyze_text_endpoint(request, payload: TextAnalysisRequest):
     """Analyzes text messages (SMS, WhatsApp transcripts, emails) for scam patterns."""
     try:
         return await analyze_text(payload.text)
@@ -29,8 +29,9 @@ async def analyze_text_endpoint(payload: TextAnalysisRequest):
             detail=f"An error occurred during text analysis: {str(e)}"
         )
 
-@router.post("/url", response_model=AgentPrediction, dependencies=[Depends(RateLimiter(times=20, seconds=60))])
-async def analyze_url_endpoint(payload: UrlAnalysisRequest):
+@router.post("/url", response_model=AgentPrediction)
+@limiter.limit("20/minute")
+async def analyze_url_endpoint(request, payload: UrlAnalysisRequest):
     """Analyzes a URL for phishing or fraudulent patterns."""
     try:
         return await analyze_url(payload.url)
@@ -41,8 +42,9 @@ async def analyze_url_endpoint(payload: UrlAnalysisRequest):
             detail=f"An error occurred during URL analysis: {str(e)}"
         )
 
-@router.post("/audio", response_model=AgentPrediction, dependencies=[Depends(RateLimiter(times=10, seconds=60))])
-async def analyze_audio_endpoint(file: UploadFile = File(...)):
+@router.post("/audio", response_model=AgentPrediction)
+@limiter.limit("10/minute")
+async def analyze_audio_endpoint(request, file: UploadFile = File(...)):
     """Transcribes uploaded audio and analyzes it for fraud patterns (e.g., lottery, UPI PIN requests)."""
     # Verify file extension
     ext = os.path.splitext(file.filename)[1].lower()
@@ -76,8 +78,9 @@ async def analyze_audio_endpoint(file: UploadFile = File(...)):
             except Exception:
                 pass
 
-@router.post("/image", response_model=AgentPrediction, dependencies=[Depends(RateLimiter(times=10, seconds=60))])
-async def analyze_image_endpoint(file: UploadFile = File(...)):
+@router.post("/image", response_model=AgentPrediction)
+@limiter.limit("10/minute")
+async def analyze_image_endpoint(request, file: UploadFile = File(...)):
     """Performs OCR on an uploaded screenshot and scans it for threat language or phishing indicators."""
     ext = os.path.splitext(file.filename)[1].lower()
     if ext not in [".png", ".jpg", ".jpeg", ".webp", ".bmp"]:

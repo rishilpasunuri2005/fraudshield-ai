@@ -1,30 +1,8 @@
 import os
 import logging
 import cv2
-import numpy as np
 
 logger = logging.getLogger(__name__)
-
-# Fallback OCR texts for hackathon demos
-DEMO_OCR_TEXTS = {
-    "sbi_phishing_sms": (
-        "Dear Customer, Your SBI Account has been blocked today. "
-        "Please click http://secure-sbi-login.net to update PAN Card."
-    ),
-    "whatsapp_chat": (
-        "CBI Officer: You are under investigation for illegal transactions. "
-        "Do not tell anyone. Show your Aadhaar card on camera. "
-        "Transfer Rs 50,000 to the verification pool account."
-    ),
-    "bank_notice": (
-        "URGENT: RBI Verification notice. Verify your account balance. "
-        "Click the link to verify: http://rbi-verification-secure.com"
-    ),
-    "telegram_scam": (
-        "Earn Rs 5000 daily by rating hotels on Google. "
-        "Join this channel for tasks. First task: send Rs 1000 deposit fee."
-    )
-}
 
 def preprocess_image(file_path: str) -> str:
     """Preprocesses image using OpenCV to improve OCR accuracy."""
@@ -57,17 +35,9 @@ def preprocess_image(file_path: str) -> str:
         return file_path
 
 def extract_text_from_image(file_path: str) -> str:
-    """Extracts text from image using PaddleOCR or fallback mocks."""
+    """Extracts text from image using PaddleOCR."""
     logger.info(f"Extracting text from image file: {file_path}")
     
-    # 1. Check for filename-based mock matching (for hackathon demo)
-    base_name = os.path.basename(file_path).lower()
-    for key, text in DEMO_OCR_TEXTS.items():
-        if key in base_name:
-            logger.info(f"Matched demo OCR text key '{key}' from file name.")
-            return text
-            
-    # Preprocess image
     preprocessed_path = preprocess_image(file_path)
     
     # 2. Try using PaddleOCR

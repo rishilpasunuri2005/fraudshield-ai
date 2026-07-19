@@ -1,7 +1,7 @@
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
 from backend.rag.retriever import get_retriever, get_vectorstore
-from backend.rag.prompt_builder import build_rag_prompt
 from backend.rag.generator import get_llm
 from backend.rag.loader import load_documents
 from backend.rag.chunker import chunk_documents
@@ -29,7 +29,13 @@ def ingest_documents(directory_path: str, collection_name: str = "fraud_knowledg
 def query_rag(question: str, collection_name: str = "fraud_knowledge") -> str:
     """End-to-end RAG query."""
     retriever = get_retriever(collection_name)
-    prompt = build_rag_prompt()
+    prompt = PromptTemplate.from_template(
+        "You are FraudShield AI, a helpful and expert assistant on fraud detection and prevention.\n"
+        "Use the following pieces of retrieved context to answer the user's question about scams, fraud, or system policies.\n"
+        "If you don't know the answer based on the context, just say that you don't know. Don't make up information.\n"
+        "Keep the answer clear, concise, and structured.\n\n"
+        "Context:\n{context}\n\nQuestion: {question}\n\nAnswer:"
+    )
     llm = get_llm()
     
     def format_docs(docs):
