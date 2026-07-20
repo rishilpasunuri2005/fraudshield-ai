@@ -1,30 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Shield, Menu, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Shield, Menu, X, LogOut } from "lucide-react";
+import { useAuth } from "../lib/auth-context";
 
 export default function TopNavLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { role, isAuthenticated, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [role, setRole] = useState<"citizen" | "police">("citizen");
+  const navRole: "citizen" | "police" = role === "admin" ? "police" : (role === "citizen" ? "citizen" : "citizen");
 
-  useEffect(() => {
-    const savedRole = localStorage.getItem("user-role");
-    if (savedRole === "police" || savedRole === "citizen") {
-      setRole(savedRole);
-    }
-  }, []);
-
-  const handleRoleChange = (newRole: "citizen" | "police") => {
-    setRole(newRole);
-    localStorage.setItem("user-role", newRole);
-    if (newRole === "police") {
-      window.location.href = "/police";
-    } else {
-      window.location.href = "/dashboard";
-    }
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
   };
 
   const navItems = [
@@ -51,7 +42,7 @@ export default function TopNavLayout({ children }: { children: React.ReactNode }
             
             <nav className="hidden md:flex items-center gap-6">
               {navItems
-                .filter((item) => item.roles.includes(role))
+                .filter((item) => item.roles.includes(navRole))
                 .map((item) => {
                   const active = pathname === item.href;
                   return (
@@ -75,12 +66,21 @@ export default function TopNavLayout({ children }: { children: React.ReactNode }
               <span>SYSTEM ONLINE</span>
             </div>
             
-            <Link 
-              href="/login"
-              className="text-[10px] font-bold uppercase font-mono bg-primary/10 border border-primary/30 rounded-sm px-4 py-1.5 text-primary hover:bg-primary/20 hover:text-white transition-colors"
-            >
-              LOGIN
-            </Link>
+            {isAuthenticated ? (
+              <button 
+                onClick={handleLogout}
+                className="text-[10px] font-bold uppercase font-mono bg-red-500/10 border border-red-500/30 rounded-sm px-4 py-1.5 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors flex items-center gap-2"
+              >
+                <LogOut className="h-3 w-3" /> LOGOUT
+              </button>
+            ) : (
+              <Link 
+                href="/login"
+                className="text-[10px] font-bold uppercase font-mono bg-primary/10 border border-primary/30 rounded-sm px-4 py-1.5 text-primary hover:bg-primary/20 hover:text-white transition-colors"
+              >
+                LOGIN
+              </Link>
+            )}
             
             <button className="md:hidden text-zinc-400 hover:text-white" onClick={() => setMobileOpen(true)}>
               <Menu className="h-5 w-5" />
@@ -105,7 +105,7 @@ export default function TopNavLayout({ children }: { children: React.ReactNode }
               </div>
               <nav className="flex flex-col gap-6">
                 {navItems
-                  .filter((item) => item.roles.includes(role))
+                  .filter((item) => item.roles.includes(navRole))
                   .map((item) => {
                     const active = pathname === item.href;
                     return (
@@ -121,6 +121,14 @@ export default function TopNavLayout({ children }: { children: React.ReactNode }
                       </Link>
                     );
                   })}
+                {isAuthenticated && (
+                  <button
+                    onClick={() => { handleLogout(); setMobileOpen(false); }}
+                    className="text-sm font-bold tracking-[0.2em] font-mono uppercase text-red-400 text-left"
+                  >
+                    LOGOUT
+                  </button>
+                )}
               </nav>
             </div>
           </div>

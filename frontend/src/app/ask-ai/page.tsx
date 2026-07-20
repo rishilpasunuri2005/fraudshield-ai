@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send, Users, Shield, Clock, BrainCircuit, Activity, Cpu, Search, Paperclip, MoreVertical, Plus } from "lucide-react";
 import { API_URL } from "../../lib/api";
+import { useAuth } from "../../lib/auth-context";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -10,6 +11,7 @@ interface ChatMessage {
 }
 
 export default function AskAIPage() {
+  const { authHeaders } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: "assistant", content: "Agent 01 online. RAG vectors loaded. How can I assist with your investigation today?" }
   ]);
@@ -33,7 +35,7 @@ export default function AskAIPage() {
     try {
       const response = await fetch(`${API_URL}/rag/explain`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify({ question: inputValue }),
       });
       if (response.ok) {

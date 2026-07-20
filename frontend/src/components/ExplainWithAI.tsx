@@ -3,12 +3,14 @@
 import React, { useState } from "react";
 import { Sparkles, Loader2, Database } from "lucide-react";
 import { API_URL } from "../lib/api";
+import { useAuth } from "../lib/auth-context";
 
 interface ExplainWithAIProps {
   query: string;
 }
 
 export default function ExplainWithAI({ query }: ExplainWithAIProps) {
+  const { authHeaders } = useAuth();
   const [loading, setLoading] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +21,7 @@ export default function ExplainWithAI({ query }: ExplainWithAIProps) {
     try {
       const response = await fetch(`${API_URL}/rag/explain`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify({ question: query }),
       });
       

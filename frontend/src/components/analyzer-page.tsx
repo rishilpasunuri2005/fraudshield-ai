@@ -13,6 +13,7 @@ import {
   Upload,
 } from "lucide-react";
 import { API_URL } from "../lib/api";
+import { useAuth } from "../lib/auth-context";
 import ExplainWithAI from "./ExplainWithAI";
 
 type InputKind = "text" | "url" | "file";
@@ -63,6 +64,7 @@ export default function AnalyzerPage({
   demoExtension = "txt",
   showExplainWithAI = false,
 }: AnalyzerPageProps) {
+  const { authHeaders } = useAuth();
   const [textValue, setTextValue] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [demoTemplate, setDemoTemplate] = useState<string | null>(null);
@@ -104,11 +106,11 @@ export default function AnalyzerPage({
           const mockFile = new File(["mock"], `${demoTemplate}.${demoExtension}`);
           formData.append("file", mockFile);
         }
-        response = await fetch(`${API_URL}${endpoint}`, { method: "POST", body: formData });
+        response = await fetch(`${API_URL}${endpoint}`, { method: "POST", body: formData, headers: authHeaders() });
       } else {
         response = await fetch(`${API_URL}${endpoint}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...authHeaders() },
           body: JSON.stringify({ [payloadKey]: textValue }),
         });
       }

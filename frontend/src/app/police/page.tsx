@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import GraphVisualizer from "../../components/graph-visualizer";
 import { ShieldAlert, Users, TrendingUp, AlertOctagon, CheckCircle, MapPin, Eye, Loader2 } from "lucide-react";
 import { API_URL } from "../../lib/api";
+import { useAuth } from "../../lib/auth-context";
 
 interface Stats {
   total_cases: number;
@@ -27,6 +28,7 @@ interface Complaint {
 }
 
 export default function PoliceConsole() {
+  const { authHeaders } = useAuth();
   const [stats, setStats] = useState<Stats | null>(null);
   const [graphData, setGraphData] = useState<any>(null);
   const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -37,17 +39,17 @@ export default function PoliceConsole() {
     async function fetchDashboardData() {
       try {
         // Fetch Stats
-        const statsRes = await fetch(`${API_URL}/dashboard`);
+        const statsRes = await fetch(`${API_URL}/dashboard`, { headers: authHeaders() });
         const statsData = await statsRes.json();
         setStats(statsData);
 
         // Fetch Network Graph
-        const graphRes = await fetch(`${API_URL}/fraud-network`);
+        const graphRes = await fetch(`${API_URL}/fraud-network`, { headers: authHeaders() });
         const graphData = await graphRes.json();
         setGraphData(graphData);
 
         // Fetch Recent Reports
-        const reportsRes = await fetch(`${API_URL}/report`);
+        const reportsRes = await fetch(`${API_URL}/report`, { headers: authHeaders() });
         const reportsData = await reportsRes.json();
         setComplaints(reportsData);
       } catch (err) {

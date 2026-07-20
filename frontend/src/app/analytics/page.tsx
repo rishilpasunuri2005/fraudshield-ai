@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { AlertTriangle, MapPin, Calendar, Smartphone, Phone, Loader2 } from "lucide-react";
 import { API_URL } from "../../lib/api";
+import { useAuth } from "../../lib/auth-context";
 
 interface AnalyticsData {
   heatmap: Array<{ name: string; lat: number; lng: number; value: number }>;
@@ -12,6 +13,7 @@ interface AnalyticsData {
 }
 
 export default function AnalyticsDashboard() {
+  const { authHeaders } = useAuth();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +21,7 @@ export default function AnalyticsDashboard() {
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const response = await fetch(`${API_URL}/analytics`);
+          const response = await fetch(`${API_URL}/analytics`, { headers: authHeaders() });
         if (response.ok) {
           const resData = await response.json();
           setData(resData);

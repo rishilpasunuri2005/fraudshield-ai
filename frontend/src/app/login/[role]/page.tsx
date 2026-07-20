@@ -2,7 +2,9 @@
 
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Fingerprint, Loader2, Lock, Mail, Shield, Users } from "lucide-react";
+import { useAuth } from "../../../lib/auth-context";
 
 type Role = "citizen" | "police";
 
@@ -41,6 +43,9 @@ function isRole(value: string): value is Role {
 
 export default function RoleLoginPage({ params }: { params: { role: string } }) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const role: Role = isRole(params.role) ? params.role : "citizen";
   const ui = useMemo(() => ROLE_UI[role], [role]);
   const AccentIcon = ui.icon;
@@ -49,14 +54,20 @@ export default function RoleLoginPage({ params }: { params: { role: string } }) 
   const accentBg = ui.accent === "primary" ? "bg-primary" : "bg-accent";
   const accentBorder = ui.accent === "primary" ? "border-primary/40" : "border-accent/60";
   const focusBorder = ui.accent === "primary" ? "focus:border-primary" : "focus:border-accent";
+  const { login } = useAuth();
+  const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      localStorage.setItem("user-role", role);
-      window.location.href = ui.destination;
-    }, 1500);
+    setError(null);
+    const result = await login(email, password);
+    if (result.error) {
+      setError(result.error);
+      setLoading(false);
+      return;
+    }
+    router.push(ui.destination);
   };
 
   return (
@@ -82,6 +93,12 @@ export default function RoleLoginPage({ params }: { params: { role: string } }) 
           </p>
         </div>
 
+        {error && (
+          <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-xs font-mono text-red-400">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
             <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">{ui.fieldLabel}</label>
@@ -90,6 +107,8 @@ export default function RoleLoginPage({ params }: { params: { role: string } }) 
               <input
                 type={ui.fieldType}
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className={`w-full bg-[#000000] border border-border rounded-lg py-3 pl-12 pr-4 text-sm text-white font-mono placeholder:text-zinc-600 focus:outline-none ${focusBorder} transition-colors`}
                 placeholder={ui.fieldPlaceholder}
               />
@@ -103,6 +122,8 @@ export default function RoleLoginPage({ params }: { params: { role: string } }) 
               <input
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className={`w-full bg-[#000000] border border-border rounded-lg py-3 pl-12 pr-4 text-sm text-white font-mono placeholder:text-zinc-600 focus:outline-none ${focusBorder} transition-colors`}
                 placeholder="••••••••"
               />

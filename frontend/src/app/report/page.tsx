@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import { Send, FileText, AlertTriangle, CheckCircle, Loader2 } from "lucide-react";
 import { API_URL } from "../../lib/api";
+import { useAuth } from "../../lib/auth-context";
 
 export default function ReportScam() {
+  const { authHeaders } = useAuth();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -47,7 +49,7 @@ export default function ReportScam() {
     try {
       const response = await fetch(`${API_URL}/report`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify(formData)
       });
 

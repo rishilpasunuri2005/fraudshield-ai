@@ -15,6 +15,7 @@ import {
   TerminalSquare
 } from "lucide-react";
 import { API_URL } from "../../lib/api";
+import { useAuth } from "../../lib/auth-context";
 
 interface Report {
   id: number;
@@ -26,13 +27,14 @@ interface Report {
 }
 
 export default function CitizenDashboard() {
+  const { authHeaders } = useAuth();
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchReports() {
       try {
-        const response = await fetch(`${API_URL}/report`);
+        const response = await fetch(`${API_URL}/report`, { headers: authHeaders() });
         if (response.ok) {
           const data = await response.json();
           setReports(data.slice(0, 5)); // show top 5 recent reports
