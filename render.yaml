@@ -6,20 +6,22 @@ services:
   - type: web
     name: fraudshield-backend
     env: docker
-    dockerContext: backend
+    dockerContext: . # Repo root so Dockerfile COPY paths (backend/...) resolve correctly
     dockerfilePath: backend/Dockerfile # Path relative to the repository root
     plan: free
     healthCheckPath: /health
     envVars:
       - key: ENV
         value: production
-      # Automatically binds PostgreSQL connection string
-      - key: DATABASE_URL_DOCKER
+      - key: SQLITE_FALLBACK
+        value: "false" # Never fall back to empty SQLite in production
+      # Automatically binds PostgreSQL connection string (must match config.py key)
+      - key: DATABASE_URL
         fromDatabase:
           name: fraudshield-postgres
           property: connectionString
-      # Automatically binds Redis connection string from the services array
-      - key: REDIS_URL_DOCKER
+      # Automatically binds Redis connection string (must match config.py key)
+      - key: REDIS_URL
         fromService:
           type: redis
           name: fraudshield-redis
