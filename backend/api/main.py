@@ -35,9 +35,29 @@ app.add_middleware(
 @app.on_event("startup")
 async def on_startup():
     logger.info("Starting up FraudShield AI Application...")
-    # Initialize SQLAlchemy database schema
     await init_db()
     logger.info("Database schema check completed.")
+    # Auto-seed demo users if DB is empty
+    try:
+        from sqlalchemy.future import select
+        from backend.database.session import async_session_maker
+        from backend.models.user import User
+        from backend.core.security import get_password_hash
+
+        async with async_session_maker() as session:
+            result = await session.execute(select(User).limit(1))
+            if not result.scalars().first():
+                logger.info("No users found — seeding demo accounts...")
+                users = [
+                    User(email="admin@fraudshield.ai", hashed_password=get_password_hash("AdminPassword123"), full_name="System Administrator", role="admin", is_active=True),
+                    User(email="officer@fraudshield.ai", hashed_password=get_password_hash("PolicePassword123"), full_name="Inspector Amit Sharma", role="police", district="Mumbai Cyber Cell", is_active=True),
+                    User(email="citizen@fraudshield.ai", hashed_password=get_password_hash("CitizenPassword123"), full_name="Rahul Verma", role="citizen", is_active=True),
+                ]
+                session.add_all(users)
+                await session.commit()
+                logger.info("Seeded 3 demo users.")
+    except Exception as e:
+        logger.warning(f"Auto-seed failed (non-fatal): {e}")
 
 # Expose a simple health check endpoint
 @app.get("/health", tags=["System"])
