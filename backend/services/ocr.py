@@ -1,6 +1,5 @@
 import os
 import logging
-import cv2
 
 logger = logging.getLogger(__name__)
 
@@ -8,6 +7,7 @@ def preprocess_image(file_path: str) -> str:
     """Preprocesses image using OpenCV to improve OCR accuracy."""
     logger.info(f"Preprocessing image with OpenCV: {file_path}")
     try:
+        import cv2
         # Load image
         img = cv2.imread(file_path)
         if img is None:

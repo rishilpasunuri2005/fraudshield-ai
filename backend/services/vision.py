@@ -1,5 +1,4 @@
 import logging
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from backend.core.config import settings
 
 logger = logging.getLogger(__name__)
@@ -11,6 +10,7 @@ async def analyze_screenshot(image_bytes: bytes) -> str:
         return "Mock Vision Analysis: Detected suspicious request for urgent payment in screenshot."
 
     try:
+        from langchain_nvidia_ai_endpoints import ChatNVIDIA
         llm = ChatNVIDIA(
             model=settings.NVIDIA_VISION_MODEL,
             api_key=settings.NVIDIA_API_KEY,

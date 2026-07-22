@@ -5,7 +5,7 @@ import { API_URL } from "./api";
 
 interface AuthState {
   token: string | null;
-  role: "citizen" | "admin" | null;
+  role: "citizen" | "admin" | "police" | null;
   email: string | null;
   fullName: string | null;
   isAuthenticated: boolean;
@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const fullName = localStorage.getItem("auth-fullname");
     return {
       token,
-      role: role === "citizen" || role === "admin" ? role : null,
+      role: role === "citizen" || role === "admin" || role === "police" ? role : null,
       email,
       fullName,
       isAuthenticated: Boolean(token),

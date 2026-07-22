@@ -1,8 +1,6 @@
 import re
 import logging
 from typing import Optional
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
-from langchain_core.prompts import ChatPromptTemplate
 
 from backend.core.config import settings
 from backend.schemas.analyze import AgentPrediction
@@ -103,6 +101,8 @@ async def analyze_text(text: str) -> AgentPrediction:
         )
         
     try:
+        from langchain_nvidia_ai_endpoints import ChatNVIDIA
+        from langchain_core.prompts import ChatPromptTemplate
         llm = ChatNVIDIA(
             model=settings.NVIDIA_MODEL,
             api_key=settings.NVIDIA_API_KEY,
@@ -183,6 +183,8 @@ async def analyze_url(url: str) -> AgentPrediction:
         )
 
     try:
+        from langchain_nvidia_ai_endpoints import ChatNVIDIA
+        from langchain_core.prompts import ChatPromptTemplate
         llm = ChatNVIDIA(
             model=settings.NVIDIA_MODEL,
             api_key=settings.NVIDIA_API_KEY,

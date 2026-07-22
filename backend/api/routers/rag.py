@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
-from backend.rag.pipeline import query_rag, ingest_documents
 import logging 
 
 logger = logging.getLogger(__name__)
@@ -17,6 +16,7 @@ class RAGResponse(BaseModel):
 async def explain_fraud(query: RAGQuery):
     """Provides a detailed explanation using RAG based on fraud rules and case notes."""
     try:
+        from backend.rag.pipeline import query_rag
         answer = query_rag(query.question)
         return RAGResponse(answer=answer)
     except Exception as e:
@@ -28,6 +28,7 @@ async def ingest_data(background_tasks: BackgroundTasks):
     """Triggers ingestion of documents from the data/raw directory into the Vector DB."""
     def run_ingestion():
         try:
+            from backend.rag.pipeline import ingest_documents
             ingest_documents("data/raw")
         except Exception as e:
             logger.error(f"Ingestion failed: {e}")
