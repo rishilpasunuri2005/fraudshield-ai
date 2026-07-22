@@ -41,12 +41,13 @@ function isRole(value: string): value is Role {
   return value === "citizen" || value === "police";
 }
 
-export default function RoleLoginPage({ params }: { params: { role: string } }) {
+export default function RoleLoginPage({ params }: { params: Promise<{ role: string }> }) {
+  const { role: rawRole } = React.use(params);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const role: Role = isRole(params.role) ? params.role : "citizen";
+  const role: Role = isRole(rawRole) ? rawRole : "citizen";
   const ui = useMemo(() => ROLE_UI[role], [role]);
   const AccentIcon = ui.icon;
   const FieldIcon = ui.fieldIcon;
